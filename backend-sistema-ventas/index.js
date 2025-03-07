@@ -13,19 +13,19 @@ app.use(express.json());
 app.use("/api", rutas);
 
 // app.get("/", (req, res) => {
-//     res.send("✅ Servidor funcionando correctamente.");
+//     res.send("Servidor funcionando correctamente.");
 // });
 
 
 // Verificar conexión a la base de datos
 pool.getConnection()
     .then(connection => {
-        console.log("✅ Conexión a MySQL establecida");
+        console.log("Conexión a MySQL establecida");
         connection.release(); // Liberar conexión
     })
-    .catch(err => console.error("❌ Error al conectar a MySQL:", err));
+    .catch(err => console.error("Error al conectar a MySQL:", err));
 
 // Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
