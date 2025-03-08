@@ -350,7 +350,7 @@ router.delete("/detalle-venta/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
-        const [result] = await pool.query("DELETE FROM DetalleVenta WHERE id = ?", [id]);
+        const [result] = await pool.query("DELETE FROM Detalle_Ventas WHERE id = ?", [id]);
         if (result.affectedRows === 0) return res.status(404).json({ error: "Detalle de venta no encontrado" });
 
         res.json({ message: "Producto eliminado de la venta correctamente" });
