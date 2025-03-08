@@ -91,7 +91,7 @@ router.post("/clientes", async (req, res) => {
     }
 });
 
-// Eliminar un usuario (DELETE)
+// Eliminar un cliente (DELETE)
 router.delete("/clientes/:id", async (req, res) => {
     const { id } = req.params;
     try {
@@ -107,7 +107,7 @@ router.delete("/clientes/:id", async (req, res) => {
     }
 });
 
-// Actualizar un usuario (PUT)
+// Actualizar un cliente (PUT)
 router.put("/clientes/:id", async (req, res) => {
     const { id } = req.params;
     const { nombre, correo,telefono, direccion } = req.body;
@@ -155,7 +155,7 @@ router.post("/productos", async (req, res) => {
     }
 });
 
-// Eliminar un usuario (DELETE)
+// Eliminar un producto (DELETE)
 router.delete("/productos/:id", async (req, res) => {
     const { id } = req.params;
     try {
@@ -228,7 +228,7 @@ router.post("/ventas", async (req, res) => {
         // Insertar el detalle de la venta
         for (let producto of productos) {
             await pool.query(
-                "INSERT INTO DetalleVenta (venta_id, producto_id, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO Detalle_Ventas (venta_id, producto_id, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?)",
                 [venta_id, producto.producto_id, producto.cantidad, producto.precio, producto.precio * producto.cantidad]
             );
         }
@@ -240,14 +240,23 @@ router.post("/ventas", async (req, res) => {
     }
 
 });
-// Actualizar un venta (PUT)
+
+// Actualizar una venta (PUT)
 router.put("/ventas/:id", async (req, res) => {
     const { id } = req.params;
-    const {  cliente_id, usuario_id } = req.body;
+    const { cliente_id, usuario_id, total } = req.body; // Asegurar que total esté incluido
+
+    if (!cliente_id || !usuario_id || total === undefined) {
+        return res.status(400).json({ error: "Todos los campos son obligatorios" });
+    }
+
     try {
         // Verificar si la venta existe
         const [result] = await pool.query("SELECT * FROM Ventas WHERE id = ?", [id]);
-        if (result.length === 0) return res.status(404).json({ error: "Venta no encontrada" });
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Venta no encontrada" });
+        }
 
         // Actualizar la venta
         await pool.query(
@@ -258,9 +267,10 @@ router.put("/ventas/:id", async (req, res) => {
         res.json({ message: "Venta actualizada correctamente" });
     } catch (error) {
         console.error("Error al actualizar la venta:", error);
-        res.status(500).json({ error: "Error al actualizar la venta" });
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 });
+
 
 // Eliminar una venta (DELETE)
 router.delete("/ventas/:id", async (req, res) => {
@@ -280,5 +290,76 @@ router.delete("/ventas/:id", async (req, res) => {
         res.status(500).json({ error: "Error al eliminar la venta" });
     }
 });
+/////////////////////////////////////////////////////////////
+//Obtener todos los detalles de las ventas (GET)
+router.get("/detalle-venta", async (req, res) => {
+    try {
+        const [rows] = await pool.query("SELECT * FROM Detalle_Ventas");
+        res.json(rows);
+    } catch (error) {
+        console.error("Error al obtener detalles de venta:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+
+});
+
+// Agregar una nuevo producto a una venta (POST)
+router.post("/detalle-venta", async (req, res) => {
+    const { venta_id, producto_id, cantidad, precio,subtotal } = req.body;
+
+    try {
+        // Insertar un nuevo detalle de venta
+        const [result] = await pool.query(
+            "INSERT INTO Detalle_Ventas (venta_id, producto_id, cantidad, precio, subtotal) VALUES (?, ?, ?, ? , ?)",
+            [venta_id, producto_id, cantidad, precio,subtotal]
+        );
+
+        res.json({ message: "Producto agregado a la venta", id: result.insertId });
+    } catch (error) {
+        console.error("Error al agregar el producto a la venta:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
+// Actualizar un detalle venta (PUT)
+router.put("/detalle-venta/:id", async (req, res) => {
+    const { id } = req.params;
+    const { cantidad, precio, subtotal } = req.body;
+
+    try {
+        // Verificar si existe el detalle de venta
+        const [result] = await pool.query("SELECT * FROM Detalle_Ventas WHERE id = ?", [id]);
+        if (result.length === 0) return res.status(404).json({ error: "Detalle de venta no encontrado" });
+
+        // Actualizar el detalle de venta
+        await pool.query(
+            "UPDATE Detalle_Ventas SET cantidad = ?, precio = ? , subtotal = ? WHERE id = ?",
+            [cantidad, precio, subtotal, id]
+        );
+
+        res.json({ message: "Detalle de venta actualizado correctamente" });
+    } catch (error) {
+        console.error("Error al actualizar el detalle de venta:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
+
+// Eliminaar un detalle venta (DELETE)
+router.delete("/detalle-venta/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [result] = await pool.query("DELETE FROM DetalleVenta WHERE id = ?", [id]);
+        if (result.affectedRows === 0) return res.status(404).json({ error: "Detalle de venta no encontrado" });
+
+        res.json({ message: "Producto eliminado de la venta correctamente" });
+    } catch (error) {
+        console.error("Error al eliminar el producto de la venta:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
+
 
 module.exports = router;
