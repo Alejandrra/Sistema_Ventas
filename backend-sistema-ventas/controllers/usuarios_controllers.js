@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 // Obtener todos los usuarios
 exports.obtener_usuarios = (req, res) => {
-    db.query('SELECT * FROM usuarios', (err, results) => {
+    db.query('SELECT * FROM Usuarios', (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
@@ -11,7 +11,7 @@ exports.obtener_usuarios = (req, res) => {
 // Obtener un usuario por ID
 exports.obtener_usuarios_id  = (req, res) => {
     const { id } = req.params;
-    db.query('SELECT * FROM usuarios WHERE id = ?', [id], (err, results) => {
+    db.query('SELECT * FROM Usuarios WHERE id = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
         res.json(results[0]);
