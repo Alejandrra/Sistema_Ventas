@@ -1,4 +1,4 @@
-const db = require('../config/db'); 
+const db = require('./config/db'); 
 
 // Obtener todos los productos
 exports.obtener_productos = (req, res) => {

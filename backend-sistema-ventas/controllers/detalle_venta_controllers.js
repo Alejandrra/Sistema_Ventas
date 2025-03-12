@@ -1,4 +1,4 @@
-const pool = require('../config/db'); // Importa la conexión a la BD
+const pool = require('./config/db'); // Importa la conexión a la BD
 
 // Obtener todos los detalles de ventas
 exports.obtener_detalles_venta = async (req, res) => {

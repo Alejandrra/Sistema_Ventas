@@ -1,4 +1,4 @@
-const db = require('../config/db'); // Importa la conexión a la base de datos
+const db = require('./config/db'); // Importa la conexión a la base de datos
 
 // Obtener todos los clientes
 exports.obtener_clientes = (req, res) => {

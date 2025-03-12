@@ -1,5 +1,5 @@
 const express = require("express");
-const { pool } = require("./db"); // Importamos la conexión a la base de datos
+const { pool } = require('./config/db'); // Importamos la conexión a la base de datos
 const router = express.Router();
 
 const usuariosRoutes = require('./routes/usuarios_routes'); //importamos
