@@ -2,6 +2,23 @@ const express = require("express");
 const { pool } = require("./db"); // Importamos la conexión a la base de datos
 const router = express.Router();
 
+const usuariosRoutes = require('./routes/usuarios_routes'); //importamos
+const clientesRoutes = require('./routes/clientes_routes'); //importamos
+const productosRoutes = require('./routes/productos_routes'); //importamos
+const ventasRoutes = require('./routes/ventas_routes'); //importamos
+const detalleventasRoutes = require('./routes/detalle_ventas_routes'); //importamos
+
+router.use('/usuarios', usuariosRoutes); //llamamos a la ruta
+router.use('/clientes', clientesRoutes); //llamamos a la ruta
+router.use('/productos', productosRoutes); //llamamos a la ruta
+router.use('/ventas', ventasRoutes); //llamamos a la ruta
+router.use('/detalle_venta', detalleventasRoutes); //llamamos a la ruta
+
+
+
+module.exports = router;
+
+/*
 // Obtener todos los usuarios (GET)
 router.get("/usuarios", async (req, res) => {
     try {
@@ -360,6 +377,6 @@ router.delete("/detalle-venta/:id", async (req, res) => {
     }
 });
 
+*/
 
 
-module.exports = router;
