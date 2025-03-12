@@ -1,6 +1,8 @@
-const express = require('express');
+//const express = require('express');
+import express from "express";
 const router = express.Router();
-const usuariosController = require('../controllers/usuarios_controllers');
+//const usuariosController = require('../controllers/usuarios_controllers');
+import usuariosController from '../controllers/usuarios_controllers';
 
 // Definir rutas
 router.get('/', usuariosController.obtener_usuarios);
@@ -9,4 +11,4 @@ router.post('/', usuariosController.crear_usuario);
 router.put('/:id', usuariosController.actualizar_usuario);
 router.delete('/:id', usuariosController.eliminar_usuario);
 
-module.exports = router;
+export default router;

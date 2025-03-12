@@ -1,4 +1,5 @@
-const db = require('./config/db');
+//const db = require('./db');
+import db from './config/db.js';
 
 // Obtener todos los usuarios
 exports.obtener_usuarios = (req, res) => {

@@ -1,9 +1,17 @@
-const express = require("express");
-const cors = require("cors");
-const { pool } =  require('./config/db');// Importamos la conexión a MySQL desde db.js
+//const express = require("express");
+//const cors = require("cors");
+//const { pool } =  require('./db');// Importamos la conexión a MySQL desde db.js
+
 
 //importamos la ruta
-const rutas = require("./routes");
+//const rutas = require("./routes");
+
+import express from "express";
+import cors from "cors";
+import pool from "./config/db.js"; // Importacion bd
+
+import rutas from "./routes.js";
+
 
 const app = express();
 const PORT = 5000; 
