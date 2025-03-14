@@ -1,8 +1,8 @@
 //const pool = require('./db'); // Importa la conexión a la BD
-import db from './config/db.js';
+import db from '../config/db.js'; 
 
 // Obtener todas las ventas
-exports.obtener_ventas = async (req, res) => {
+export const obtener_ventas = async (req, res) => {
     try {
         const [rows] = await pool.query(`
             SELECT v.id, c.nombre AS cliente, v.fecha, v.total 
@@ -17,7 +17,7 @@ exports.obtener_ventas = async (req, res) => {
 };
 
 // Crear una nueva venta con su detalle
-exports.crear_venta = async (req, res) => {
+export const crear_venta = async (req, res) => {
     const { cliente_id, usuario_id, productos } = req.body;
 
     if (!productos || productos.length === 0) {
@@ -48,7 +48,7 @@ exports.crear_venta = async (req, res) => {
 };
 
 // Actualizar una venta
-exports.actualizar_venta = async (req, res) => {
+export const actualizar_venta = async (req, res) => {
     const { id } = req.params;
     const { cliente_id, usuario_id, total } = req.body;
 
@@ -75,7 +75,7 @@ exports.actualizar_venta = async (req, res) => {
 };
 
 // Eliminar una venta
-exports.eliminar_venta = async (req, res) => {
+export const eliminar_venta = async (req, res) => {
     const { id } = req.params;
 
     try {

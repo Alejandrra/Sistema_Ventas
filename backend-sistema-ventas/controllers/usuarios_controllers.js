@@ -1,8 +1,8 @@
 //const db = require('./db');
-import db from './config/db.js';
+import db from '../config/db.js'; 
 
 // Obtener todos los usuarios
-exports.obtener_usuarios = (req, res) => {
+export const obtener_usuarios = (req, res) => {
     db.query('SELECT * FROM Usuarios', (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
@@ -10,7 +10,7 @@ exports.obtener_usuarios = (req, res) => {
 };
 
 // Obtener un usuario por ID
-exports.obtener_usuarios_id  = (req, res) => {
+export const obtener_usuarios_id  = (req, res) => {
     const { id } = req.params;
     db.query('SELECT * FROM Usuarios WHERE id = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -20,7 +20,7 @@ exports.obtener_usuarios_id  = (req, res) => {
 };
 
 // Crear un nuevo usuario
-exports.crear_usuario = (req, res) => {
+export const crear_usuario = (req, res) => {
     const { nombre, correo, contraseña, rol } = req.body;
     db.query('INSERT INTO Usuarios (nombre, correo, contraseña, rol) VALUES (?, ?, ?, ?)', [nombre, correo,contraseña,rol], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -29,7 +29,7 @@ exports.crear_usuario = (req, res) => {
 };
 
 // Actualizar un usuario
-exports.actualizar_usuario = (req, res) => {
+export const actualizar_usuario = (req, res) => {
     const { id } = req.params;
     const { nombre, correo, contraseña, rol } = req.body;
     db.query('UPDATE Usuarios SET nombre = ?, correo = ?, contraseña = ?, rol = ? WHERE id = ?', [nombre, correo, contraseña, rol, id], (err, results) => {
@@ -39,7 +39,7 @@ exports.actualizar_usuario = (req, res) => {
 };
 
 // Eliminar un usuario
-exports.eliminar_usuario = (req, res) => {
+export const eliminar_usuario = (req, res) => {
     const { id } = req.params;
     db.query('DELETE FROM usuarios WHERE id = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });

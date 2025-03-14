@@ -1,9 +1,9 @@
 //const pool = require('./db'); // Importa la conexión a la BD
-import db from './config/db.js';
+import db from '../config/db.js'; 
 
 
 // Obtener todos los detalles de ventas
-exports.obtener_detalles_venta = async (req, res) => {
+export const obtener_detalles_venta = async (req, res) => {
     try {
         const [rows] = await pool.query("SELECT * FROM Detalle_Ventas");
         res.json(rows);
@@ -14,7 +14,7 @@ exports.obtener_detalles_venta = async (req, res) => {
 };
 
 // Agregar un nuevo producto a una venta
-exports.agregar_detalle_venta = async (req, res) => {
+export const agregar_detalle_venta = async (req, res) => {
     const { venta_id, producto_id, cantidad, precio, subtotal } = req.body;
 
     try {
@@ -31,7 +31,7 @@ exports.agregar_detalle_venta = async (req, res) => {
 };
 
 // Actualizar un detalle de venta
-exports.actualizar_detalle_venta = async (req, res) => {
+export const actualizar_detalle_venta = async (req, res) => {
     const { id } = req.params;
     const { cantidad, precio, subtotal } = req.body;
 
@@ -52,7 +52,7 @@ exports.actualizar_detalle_venta = async (req, res) => {
 };
 
 // Eliminar un detalle de venta
-exports.eliminar_detalle_venta = async (req, res) => {
+export const eliminar_detalle_venta = async (req, res) => {
     const { id } = req.params;
 
     try {

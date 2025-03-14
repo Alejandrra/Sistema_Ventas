@@ -1,8 +1,8 @@
 //const db = require('./db'); // Importa la conexión a la base de datos
-import db from './config/db.js';
+import db from '../config/db.js'; 
 
 // Obtener todos los clientes
-exports.obtener_clientes = (req, res) => {
+export const obtener_clientes = (req, res) => {
     db.query('SELECT * FROM Clientes', (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
@@ -10,7 +10,7 @@ exports.obtener_clientes = (req, res) => {
 };
 
 // Obtener un cliente por ID
-exports.obtener_cliente_Id = (req, res) => {
+export const obtener_cliente_Id = (req, res) => {
     const { id } = req.params;
     db.query('SELECT * FROM Clientes WHERE id = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -20,7 +20,7 @@ exports.obtener_cliente_Id = (req, res) => {
 };
 
 // Crear un nuevo cliente
-exports.crear_cliente = (req, res) => {
+export const crear_cliente = (req, res) => {
     const { nombre, correo,telefono, direccion } = req.body;
     db.query("INSERT INTO Clientes ( nombre, correo, telefono, direccion) VALUES (?, ?, ?, ?)",
     [nombre, email, telefono, direccion], (err, results) => {
@@ -30,7 +30,7 @@ exports.crear_cliente = (req, res) => {
 };
 
 // Actualizar un cliente
-exports.actualizar_cliente = (req, res) => {
+export const actualizar_cliente = (req, res) => {
     const { id } = req.params;
     const { nombre, correo,telefono, direccion} = req.body;
     db.query("UPDATE Clientes SET nombre = ?, correo = ?, telefono = ?, direccion = ? WHERE id = ?", 
@@ -41,7 +41,7 @@ exports.actualizar_cliente = (req, res) => {
 };
 
 // Eliminar un cliente
-exports.eliminar_cliente = (req, res) => {
+export const eliminar_cliente = (req, res) => {
     const { id } = req.params;
     db.query('DELETE FROM Clientes WHERE id = ?', [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
