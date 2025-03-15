@@ -5,11 +5,11 @@ import db from '../config/db.js';
 // Obtener todos los detalles de ventas
 export const obtener_detalles_venta = async (req, res) => {
     try {
-        const [rows] = await pool.query("SELECT * FROM Detalle_Ventas");
+        const [rows] = await db.query("SELECT * FROM Detalle_Ventas");
         res.json(rows);
     } catch (error) {
-        console.error("Error al obtener detalles de venta:", error);
-        res.status(500).json({ error: "Error interno del servidor" });
+        console.error("Error al obtener detalles de venta:", error.message);  // Detalle del error
+        res.status(500).json({ error: "Error interno del servidor", details: error.message });
     }
 };
 
@@ -18,7 +18,7 @@ export const agregar_detalle_venta = async (req, res) => {
     const { venta_id, producto_id, cantidad, precio, subtotal } = req.body;
 
     try {
-        const [result] = await pool.query(
+        const [result] = await db.query(
             "INSERT INTO Detalle_Ventas (venta_id, producto_id, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?)",
             [venta_id, producto_id, cantidad, precio, subtotal]
         );
@@ -36,10 +36,10 @@ export const actualizar_detalle_venta = async (req, res) => {
     const { cantidad, precio, subtotal } = req.body;
 
     try {
-        const [result] = await pool.query("SELECT * FROM Detalle_Ventas WHERE id = ?", [id]);
+        const [result] = await db.query("SELECT * FROM Detalle_Ventas WHERE id = ?", [id]);
         if (result.length === 0) return res.status(404).json({ error: "Detalle de venta no encontrado" });
 
-        await pool.query(
+        await db.query(
             "UPDATE Detalle_Ventas SET cantidad = ?, precio = ?, subtotal = ? WHERE id = ?",
             [cantidad, precio, subtotal, id]
         );
@@ -56,7 +56,7 @@ export const eliminar_detalle_venta = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const [result] = await pool.query("DELETE FROM Detalle_Ventas WHERE id = ?", [id]);
+        const [result] = await db.query("DELETE FROM Detalle_Ventas WHERE id = ?", [id]);
         if (result.affectedRows === 0) return res.status(404).json({ error: "Detalle de venta no encontrado" });
 
         res.json({ message: "Producto eliminado de la venta correctamente" });

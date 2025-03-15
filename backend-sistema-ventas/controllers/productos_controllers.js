@@ -28,7 +28,7 @@ export const actualizar_producto = async(req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, precio, stock, categoria } = req.body;
     try {
-        const [results] = await db.query("UPDATE Productos SET nombre = ?, correo = ?, descripcion = ?, precio = ? , stock = ? , categoria = ?   WHERE id = ?", [nombre, descripcion, precio, stock, categoria, id]);
+        const [results] = await db.query("UPDATE Productos SET nombre = ?, descripcion = ?, precio = ? , stock = ? , categoria = ?   WHERE id = ?", [nombre, descripcion, precio, stock, categoria, id]);
         res.json({ mensaje: 'Producto actualizado' });
     } catch (err) {
         res.status(500).json({ error: err.message });

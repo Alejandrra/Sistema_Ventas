@@ -4,7 +4,7 @@ import db from '../config/db.js';
 // Obtener todas las ventas
 export const obtener_ventas = async (req, res) => {
     try {
-        const [rows] = await pool.query(`
+        const [rows] = await db.query(`
             SELECT v.id, c.nombre AS cliente, v.fecha, v.total 
             FROM Ventas v
             JOIN Clientes c ON v.cliente_id = c.id
@@ -27,14 +27,14 @@ export const crear_venta = async (req, res) => {
     try {
         let total = productos.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
 
-        const [venta] = await pool.query(
+        const [venta] = await db.query(
             "INSERT INTO Ventas (cliente_id, usuario_id, total) VALUES (?, ?, ?)",
             [cliente_id, usuario_id, total]
         );
         const venta_id = venta.insertId;
 
         for (let producto of productos) {
-            await pool.query(
+            await db.query(
                 "INSERT INTO Detalle_Ventas (venta_id, producto_id, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?)",
                 [venta_id, producto.producto_id, producto.cantidad, producto.precio, producto.precio * producto.cantidad]
             );
@@ -57,12 +57,12 @@ export const actualizar_venta = async (req, res) => {
     }
 
     try {
-        const [result] = await pool.query("SELECT * FROM Ventas WHERE id = ?", [id]);
+        const [result] = await db.query("SELECT * FROM Ventas WHERE id = ?", [id]);
         if (result.length === 0) {
             return res.status(404).json({ error: "Venta no encontrada" });
         }
 
-        await pool.query(
+        await db.query(
             "UPDATE Ventas SET cliente_id = ?, usuario_id = ?, total = ? WHERE id = ?",
             [cliente_id, usuario_id, total, id]
         );
@@ -79,10 +79,10 @@ export const eliminar_venta = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const [result] = await pool.query("SELECT * FROM Ventas WHERE id = ?", [id]);
+        const [result] = await db.query("SELECT * FROM Ventas WHERE id = ?", [id]);
         if (result.length === 0) return res.status(404).json({ error: "Venta no encontrada" });
 
-        await pool.query("DELETE FROM Ventas WHERE id = ?", [id]);
+        await db.query("DELETE FROM Ventas WHERE id = ?", [id]);
 
         res.json({ message: "Venta eliminada correctamente" });
     } catch (error) {
