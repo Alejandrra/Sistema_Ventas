@@ -1,6 +1,5 @@
 //const express = require('express');
 import express from "express";
-
 const router = express.Router();
 import { obtener_Clientes, obtener_Cliente_Id, crear_Cliente, actualizar_Cliente, eliminar_Cliente }  from '../controllers/clientes_controllers.js';
 
