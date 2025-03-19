@@ -2,13 +2,13 @@
 import express from "express";
 
 const router = express.Router();
-import { obtener_clientes, obtener_cliente_Id, crear_cliente, actualizar_cliente, eliminar_cliente }  from '../controllers/clientes_controllers.js';
+import { obtener_Clientes, obtener_Cliente_Id, crear_Cliente, actualizar_Cliente, eliminar_Cliente }  from '../controllers/clientes_controllers.js';
 
 // Definir rutas
-router.get('/', obtener_clientes);
-router.get('/:id', obtener_cliente_Id);
-router.post('/', crear_cliente);
-router.put('/:id', actualizar_cliente);
-router.delete('/:id', eliminar_cliente);
+router.get('/', obtener_Clientes);
+router.get('/:id', obtener_Cliente_Id);
+router.post('/', crear_Cliente);
+router.put('/:id', actualizar_Cliente);
+router.delete('/:id', eliminar_Cliente);
 
 export default router;

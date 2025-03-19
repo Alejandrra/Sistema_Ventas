@@ -2,11 +2,11 @@
 import express from "express";
 const router = express.Router();
 //const detalleVentaController = require('../controllers/detalle_venta_controllers');
-import { obtener_detalles_venta, agregar_detalle_venta, actualizar_detalle_venta, eliminar_detalle_venta } from '../controllers/detalle_venta_controllers.js';
+import { Obtener_Detalles_Venta, Agregar_Detalle_Venta, Actualizar_Detalle_Venta, Eliminar_Detalle_Venta } from '../controllers/detalle_venta_controllers.js';
 
-router.get("/", obtener_detalles_venta);
-router.post("/", agregar_detalle_venta);
-router.put("/:id", actualizar_detalle_venta);
-router.delete("/:id", eliminar_detalle_venta);
+router.get("/", Obtener_Detalles_Venta);
+router.post("/", Agregar_Detalle_Venta);
+router.put("/:id", Actualizar_Detalle_Venta);
+router.delete("/:id", Eliminar_Detalle_Venta);
 
 export default router;
