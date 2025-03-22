@@ -6,7 +6,7 @@ export const obtener_usuarios = async () => {
 };
 
 // Obtener un usuario por ID
-export const obtener_usuarios_ID = async (id) => {
+export const obtener_usuarios_id = async (id) => {
     const [rows] = await db.query('SELECT * FROM Usuarios WHERE id = ?', [id]);
     return rows.length > 0 ? rows[0] : null;
 };
