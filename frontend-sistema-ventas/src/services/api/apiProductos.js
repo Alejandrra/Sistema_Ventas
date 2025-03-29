@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL base del backend (ajústala según la configuración de tu servidor)
-const API_URL = 'http://localhost:5000'; 
+const API_URL = 'http://localhost:5000/productos';
 
 // Función para obtener todos los productos (GET)
 export const obtenerProductos = async () => {
