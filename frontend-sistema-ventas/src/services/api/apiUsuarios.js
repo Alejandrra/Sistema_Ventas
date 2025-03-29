@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:5000';
 export const obtenerUsuario = async () => {
   try {
     const response = await axios.get(`${API_URL}/usuarios`); 
-    return response.data; // Retorna los productos obtenidos
+    return response.data; 
   } catch (error) {
     console.error("Error al obtener usuario:", error);
     return []; // En caso de error, retorna un arreglo vacío
@@ -18,7 +18,7 @@ export const obtenerUsuario = async () => {
 export const crearUsuario = async (usuario) => {  
   try {
     const response = await axios.post(`${API_URL}/usuarios`, usuario); 
-    return response.data; // Retorna el producto agregado
+    return response.data; 
   } catch (error) {
     console.error("Error agregando usuario:", error);
   }
@@ -28,7 +28,7 @@ export const crearUsuario = async (usuario) => {
 export const actualizarUsuario = async (id, usuarioActualizado) => {  
   try {
     const response = await axios.put(`${API_URL}/usuarios/${id}`, usuarioActualizado); 
-    return response.data; // Retorna el producto actualizado
+    return response.data; 
   } catch (error) {
     console.error("Error al actualizar usuario:", error);
   }
