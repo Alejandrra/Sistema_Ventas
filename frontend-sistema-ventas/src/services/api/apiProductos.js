@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL base del backend (ajústala según la configuración de tu servidor)
-const API_URL = 'http://localhost:5000/productos';
+const API_URL = 'http://localhost:5000/api';
 
 // Función para obtener todos los productos (GET)
 export const obtenerProductos = async () => {
@@ -17,8 +17,13 @@ export const obtenerProductos = async () => {
 // Función para agregar un nuevo producto (POST)
 export const crearProducto = async (producto) => {  
   try {
-    const response = await axios.post(`${API_URL}/productos`, producto); // Llamada a la ruta POST '/productos' del backend
-    return response.data; // Retorna el producto agregado
+    console.log("Enviando producto:", producto);
+    const response = await axios.post(`${API_URL}/productos`, producto, {
+      headers: {
+        "Content-Type": "application/json", // ✅ Agregado para evitar problemas
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error al crear producto:", error);
   }
@@ -27,8 +32,12 @@ export const crearProducto = async (producto) => {
 // Función para actualizar un producto (PUT)
 export const actualizarProducto = async (id, productoActualizado) => {  
   try {
-    const response = await axios.put(`${API_URL}/productos/${id}`, productoActualizado); // Llamada a la ruta PUT '/productos/:id' del backend
-    return response.data; // Retorna el producto actualizado
+    const response = await axios.put(`${API_URL}/productos/${id}`, productoActualizado, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error al actualizar producto:", error);
   }
@@ -37,8 +46,8 @@ export const actualizarProducto = async (id, productoActualizado) => {
 // Función para eliminar un producto (DELETE)
 export const eliminarProducto = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/productos/${id}`); 
-    return response.data; // Retorna la respuesta del backend (mensaje de éxito, etc.)
+    const response = await axios.delete(`${API_URL}/productos/${id}`);
+    return response.data;
   } catch (error) {
     console.error("Error al eliminar producto:", error);
   }
