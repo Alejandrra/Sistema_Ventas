@@ -28,7 +28,17 @@ const Productos = () => {
       alert("Completa todos los campos");
       return;
     }
-    await crearProducto(nuevoProducto); //hace un POST a la API.
+
+    const productoFormateado = {
+      nombre: nuevoProducto.nombre,
+      descripcion: nuevoProducto.descripcion,
+      precio: parseFloat(nuevoProducto.precio), // Convertir a número
+      stock: parseInt(nuevoProducto.stock), // Convertir a número entero
+      categoria: nuevoProducto.categoria
+    };
+
+
+    await crearProducto(productoFormateado); //hace un POST a la API.
     setNuevoProducto({ nombre: '', descripcion: '', precio: '', stock: '' , categoria: '' });
     cargarProductos(); //limpia y actualiza la lista de productos
   };
