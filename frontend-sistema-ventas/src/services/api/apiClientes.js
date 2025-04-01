@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL base del backend (ajústala según la configuración de tu servidor)
-const API_URL = 'http://localhost:5000'; 
+const API_URL = 'http://localhost:5000/api';
 
 // Función para obtener todos los clientes (GET)
 export const obtenerClientes = async () => {
@@ -17,18 +17,27 @@ export const obtenerClientes = async () => {
 // Función para agregar un nuevo cliente (POST)
 export const crearCliente = async (cliente) => {  
   try {
-    const response = await axios.post(`${API_URL}/clientes`, cliente); 
-    return response.data; 
+    console.log("Enviando cliente:", cliente);
+    const response = await axios.post(`${API_URL}/clientes`, cliente, {
+      headers: {
+        "Content-Type": "application/json", // Agregado para evitar problemas
+      },
+    });
+    return response.data;
   } catch (error) {
-    console.error("Error agregando cliente:", error);
+    console.error("Error al crear cliente:", error);
   }
 };
 
 // Función para actualizar un cliente (PUT)
 export const actualizarCliente = async (id, clinteActualizado) => {  
   try {
-    const response = await axios.put(`${API_URL}/clientes/${id}`, clinteActualizado); 
-    return response.data; 
+    const response = await axios.put(`${API_URL}/clientes/${id}`, clinteActualizado, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error al actualizar cliente:", error);
   }

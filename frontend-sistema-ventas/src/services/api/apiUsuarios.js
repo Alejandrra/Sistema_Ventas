@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL base del backend (ajústala según la configuración de tu servidor)
-const API_URL = 'http://localhost:5000'; 
+const API_URL = 'http://localhost:5000/api';
 
 // Función para obtener todos los usuarios (GET)
 export const obtenerUsuario = async () => {
@@ -17,18 +17,27 @@ export const obtenerUsuario = async () => {
 // Función para agregar un nuevo usuario (POST)
 export const crearUsuario = async (usuario) => {  
   try {
-    const response = await axios.post(`${API_URL}/usuarios`, usuario); 
-    return response.data; 
+    console.log("Enviando usuario:", usuario);
+    const response = await axios.post(`${API_URL}/usuarios`, usuario, {
+      headers: {
+        "Content-Type": "application/json", // Agregado para evitar problemas
+      },
+    });
+    return response.data;
   } catch (error) {
-    console.error("Error agregando usuario:", error);
+    console.error("Error al crear usuario:", error);
   }
 };
 
 // Función para actualizar un usuario (PUT)
 export const actualizarUsuario = async (id, usuarioActualizado) => {  
   try {
-    const response = await axios.put(`${API_URL}/usuarios/${id}`, usuarioActualizado); 
-    return response.data; 
+    const response = await axios.put(`${API_URL}/usuarios/${id}`, usuarioActualizado, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error al actualizar usuario:", error);
   }

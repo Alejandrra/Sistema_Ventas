@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL base del backend (ajústala según la configuración de tu servidor)
-const API_URL = 'http://localhost:5000'; 
+const API_URL = 'http://localhost:5000/api';
 
 // Función para obtener todas las ventas (GET)
 export const obtenerVentas = async () => {
@@ -17,18 +17,27 @@ export const obtenerVentas = async () => {
 // Función para agregar una nueva ventas (POST)
 export const crearVenta = async (venta) => {  
   try {
-    const response = await axios.post(`${API_URL}/ventas`, venta); 
-    return response.data; 
+    console.log("Enviando venta:", venta);
+    const response = await axios.post(`${API_URL}/ventas`, venta, {
+      headers: {
+        "Content-Type": "application/json", // Agregado para evitar problemas
+      },
+    });
+    return response.data;
   } catch (error) {
-    console.error("Error agregando venta:", error);
+    console.error("Error al crear venta:", error);
   }
 };
 
 // Función para actualizar una venta (PUT)
 export const actualizarVenta = async (id, ventaActualizado) => {  
   try {
-    const response = await axios.put(`${API_URL}/ventas/${id}`, ventaActualizado); 
-    return response.data; 
+    const response = await axios.put(`${API_URL}/ventas/${id}`, ventaActualizado, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error al actualizar venta:", error);
   }

@@ -20,7 +20,7 @@ export const crearProducto = async (producto) => {
     console.log("Enviando producto:", producto);
     const response = await axios.post(`${API_URL}/productos`, producto, {
       headers: {
-        "Content-Type": "application/json", // ✅ Agregado para evitar problemas
+        "Content-Type": "application/json", // Agregado para evitar problemas
       },
     });
     return response.data;

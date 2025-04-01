@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL base del backend (ajústala según la configuración de tu servidor)
-const API_URL = 'http://localhost:5000'; 
+const API_URL = 'http://localhost:5000/api';
 
 // Función para obtener todas los detalleVentas (GET)
 export const obtenerDetalle_Ventas = async () => {
@@ -17,18 +17,27 @@ export const obtenerDetalle_Ventas = async () => {
 // Función para agregar un nuevo detalleVentas (POST)
 export const crearDetalle_Ventas = async (detalle_ventas) => {  
   try {
-    const response = await axios.post(`${API_URL}/detalle_venta`, detalle_ventas); 
-    return response.data; 
+    console.log("Enviando detalle venta:", detalle_ventas);
+    const response = await axios.post(`${API_URL}/detalle_venta`, detalle_ventas, {
+      headers: {
+        "Content-Type": "application/json", // Agregado para evitar problemas
+      },
+    });
+    return response.data;
   } catch (error) {
-    console.error("Error agregando detalle ventas:", error);
+    console.error("Error al crear detalle venta:", error);
   }
 };
 
 // Función para actualizar un detalleVenta (PUT)
 export const actualizarDetalle_Ventas = async (id, detalle_ventaActualizado) => {  
   try {
-    const response = await axios.put(`${API_URL}/detalle_venta/${id}`, detalle_ventaActualizado); 
-    return response.data; 
+    const response = await axios.put(`${API_URL}/detalle_venta/${id}`, detalle_ventaActualizado, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error al actualizar detalle venta:", error);
   }
