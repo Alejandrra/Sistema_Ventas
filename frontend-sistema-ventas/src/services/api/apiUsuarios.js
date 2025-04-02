@@ -23,6 +23,7 @@ export const crearUsuario = async (usuario) => {
         "Content-Type": "application/json", // Agregado para evitar problemas
       },
     });
+    console.log("Respuesta del servidor:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error al crear usuario:", error);

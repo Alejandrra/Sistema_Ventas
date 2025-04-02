@@ -18,7 +18,7 @@ const Detalle_Venta = () => {
 
   const cargarDetalle_Ventas = async () => {
     const data = await obtenerDetalle_Ventas();
-    setVentas(data);
+    setDetalle_Ventas(data);
   };
 
   const handleCrearDetalle_Venta = async () => {

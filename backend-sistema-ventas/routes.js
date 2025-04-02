@@ -4,13 +4,7 @@
 import express from "express";
 import pool from "./config/db.js";
 const router = express.Router();
-/*
-const usuariosRoutes = require('./routes/usuarios_routes'); //importamos
-const clientesRoutes = require('./routes/clientes_routes'); //importamos
-const productosRoutes = require('./routes/productos_routes'); //importamos
-const ventasRoutes = require('./routes/ventas_routes'); //importamos
-const detalleventasRoutes = require('./routes/detalle_ventas_routes'); //importamos
-*/
+
 import usuariosRoutes from './routes/usuarios_routes.js';
 import clientesRoutes from './routes/clientes_routes.js';
 import productosRoutes from './routes/productos_routes.js';

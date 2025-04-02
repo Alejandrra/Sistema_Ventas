@@ -24,10 +24,15 @@ export const obtener_Usuarios_Id = async (req, res) => {
 // Crear un nuevo usuario
 export const crear_Usuario = async (req, res) => {
     const { nombre, correo, contraseña, rol } = req.body;
+    if (!nombre || !correo || !contraseña || !rol) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+    }
+
     try {
         const usuarioId = await crear_usuario(nombre, correo, contraseña, rol);
         res.status(201).json({ mensaje: 'Usuario agregado', id: usuarioId });
     } catch (err) {
+        console.error('Error en crear_Usuario:', err); // Detalle del error
         res.status(500).json({ error: err.message });
     }
 };

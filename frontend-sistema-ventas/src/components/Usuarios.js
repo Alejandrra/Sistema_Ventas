@@ -6,7 +6,7 @@ const Usuarios = () => {
   const [nuevoUsuario, setNuevoUsuario] = useState({
     nombre: '',
     correo: '',
-    contrasena: '',
+    contraseña: '',
     rol: ''
 
   });
@@ -22,16 +22,15 @@ const Usuarios = () => {
   };
 
   const handleCrearUsuario = async () => {
-    if (!nuevoUsuario.nombre || !nuevoUsuario.correo || !nuevoUsuario.contrasena || !nuevoUsuario.rol) 
+    if (!nuevoUsuario.nombre || !nuevoUsuario.correo || !nuevoUsuario.contraseña || !nuevoUsuario.rol) 
     {
       alert("Completa todos los campos");
       return;
     }
+    console.log("Datos enviados desde el frontend:", nuevoUsuario); // Debug
 
-
-
-    await crearUsuario(handleCrearUsuario); //hace un POST a la API.
-    setNuevoProducto({ nombre: '', correo: '', contrasena: '', rol: '' });
+    await crearUsuario(nuevoUsuario); //hace un POST a la API.
+    setNuevoUsuario({ nombre: '', correo: '', contraseña: '', rol: '' });
     cargarUsuarios(); //limpia y actualiza la lista de usuarios
   };
 
@@ -43,7 +42,7 @@ const Usuarios = () => {
 
 
     if (!nuevoNombre || !nuevoCorreo || !nuevoContrasena || !nuevoRol ) return;
-    await actualizarUsuario(id, { nombre: nuevoNombre, correo: nuevoCorreo, contrasena: nuevoContrasena, rol: nuevoRol}); //hace un PUT a la API.
+    await actualizarUsuario(id, { nombre: nuevoNombre, correo: nuevoCorreo, contraseña: nuevoContrasena, rol: nuevoRol}); //hace un PUT a la API.
     cargarUsuarios(); //vuelve a cargar los datos
   };
 
@@ -60,7 +59,7 @@ const Usuarios = () => {
         {usuarios.map((usuario) => (
           <li key={usuario.id}>
             <strong>{usuario.nombre}</strong> - {usuario.correo} <br />
-            {usuario.contrasena} | {usuario.rol} 
+            {usuario.contraseña} | {usuario.rol} 
             <br />
             <button onClick={() => handleActualizarUsuario(usuario.id)}>Editar</button>
             <button onClick={() => handleEliminarUsuario(usuario.id)}>Eliminar</button>
@@ -82,18 +81,18 @@ const Usuarios = () => {
         onChange={(e) => setNuevoUsuario({ ...nuevoUsuario, correo: e.target.value })}
       />
       <input
-        type="text"
+        type="password"
         placeholder="Contraseña"
-        value={nuevoUsuario.contrasena}
-        onChange={(e) => setNuevoUsuario({ ...nuevoUsuario, contrasena: e.target.value })}
+        value={nuevoUsuario.contraseña}
+        onChange={(e) => setNuevoUsuario({ ...nuevoUsuario, contraseña: e.target.value })}
       />
       <input
         type="text"
         placeholder="Rol"
         value={nuevoUsuario.rol}
-        onChange={(e) => setNuevoUsuario({ ...nuevoUsuario, stock: e.target.value })}
+        onChange={(e) => setNuevoUsuario({ ...nuevoUsuario, rol: e.target.value })}
       />
-            <button onClick={handleCrearProducto}>Agregar</button>
+            <button onClick={handleCrearUsuario}>Agregar</button>
     </div>
   );
 };
