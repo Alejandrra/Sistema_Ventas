@@ -3,7 +3,14 @@ import { obtenerVentas, crearVenta, actualizarVenta, eliminarVenta } from "../se
 
 const Venta = () => {
   const [ventas, setVentas] = useState([]);
-  const [nuevaVenta, setNuevaVenta] = useState({ cliente_id: "", usuario_id: "", fecha: "", total: "" });
+  const [nuevaVenta, setNuevaVenta] = useState({
+    cliente_id: "",
+    usuario_id: "",
+    fecha: "",
+    total: "",
+    productos: [] // Aquí agregamos productos
+  });
+  const [producto, setProducto] = useState({ producto_id: "", cantidad: "", precio: "" });
 
   useEffect(() => {
     cargarVentas();
@@ -24,8 +31,8 @@ const Venta = () => {
   };
 
   const handleCrearVenta = async () => {
-    if (!nuevaVenta.cliente_id || !nuevaVenta.usuario_id || !nuevaVenta.total) {
-      alert("Completa todos los campos obligatorios");
+    if (!nuevaVenta.cliente_id || !nuevaVenta.usuario_id || !nuevaVenta.total || nuevaVenta.productos.length === 0) {
+      alert("Completa todos los campos obligatorios y agrega al menos un producto");
       return;
     }
 
@@ -34,6 +41,7 @@ const Venta = () => {
       usuario_id: nuevaVenta.usuario_id,
       fecha: nuevaVenta.fecha ? formatearFecha(nuevaVenta.fecha) : undefined,
       total: parseFloat(nuevaVenta.total),
+      productos: nuevaVenta.productos, // Agregar productos a la venta
     };
 
     console.log("Venta enviada:", ventaFormateada);
@@ -41,11 +49,28 @@ const Venta = () => {
     try {
       await crearVenta(ventaFormateada);
       alert("Venta creada correctamente");
-      setNuevaVenta({ cliente_id: "", usuario_id: "", fecha: "", total: "" });
+      setNuevaVenta({ cliente_id: "", usuario_id: "", fecha: "", total: "", productos: [] }); // Limpiar después de agregar
       cargarVentas();
     } catch (error) {
       console.error("Error al crear venta:", error);
     }
+  };
+
+  // Función para agregar un producto a la venta
+  const handleAgregarProducto = () => {
+    if (!producto.producto_id || !producto.cantidad || !producto.precio) {
+      alert("Por favor, completa todos los campos del producto.");
+      return;
+    }
+
+    const nuevoProducto = {
+      producto_id: producto.producto_id,
+      cantidad: producto.cantidad,
+      precio: producto.precio,
+    };
+
+    setNuevaVenta({ ...nuevaVenta, productos: [...nuevaVenta.productos, nuevoProducto] });
+    setProducto({ producto_id: "", cantidad: "", precio: "" }); // Limpiar campos de producto
   };
 
   const handleActualizarVenta = async (id) => {
@@ -124,6 +149,29 @@ const Venta = () => {
         value={nuevaVenta.total}
         onChange={(e) => setNuevaVenta({ ...nuevaVenta, total: e.target.value })}
       />
+      
+      {/* Sección para agregar productos */}
+      <h4>Agregar Producto</h4>
+      <input
+        type="text"
+        placeholder="ID Producto"
+        value={producto.producto_id}
+        onChange={(e) => setProducto({ ...producto, producto_id: e.target.value })}
+      />
+      <input
+        type="number"
+        placeholder="Cantidad"
+        value={producto.cantidad}
+        onChange={(e) => setProducto({ ...producto, cantidad: e.target.value })}
+      />
+      <input
+        type="number"
+        placeholder="Precio"
+        value={producto.precio}
+        onChange={(e) => setProducto({ ...producto, precio: e.target.value })}
+      />
+      <button onClick={handleAgregarProducto}>Agregar Producto</button>
+
       <button onClick={handleCrearVenta}>Agregar Venta</button>
     </div>
   );

@@ -17,9 +17,9 @@ export const crear_venta = async (cliente_id, usuario_id, fecha, total) => {
     return result.insertId; // Retorna el ID de la nueva venta
 };
 
-export const actualizar_venta = async (id, cliente_id, usuario_id, total) => {
+export const actualizar_venta = async (id, cliente_id, usuario_id, fecha, total) => {
     const [result] = await db.query(
-        "UPDATE Ventas SET cliente_id = ?, usuario_id = ?, total = ? WHERE id = ?",
+        "UPDATE Ventas SET cliente_id = ?, usuario_id = ?, fecha = ?, total = ? WHERE id = ?",
         [cliente_id, usuario_id, fecha, total, id]
     );
     return result.affectedRows;

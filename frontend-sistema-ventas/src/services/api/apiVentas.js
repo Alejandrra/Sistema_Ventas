@@ -14,19 +14,22 @@ export const obtenerVentas = async () => {
   }
 };
 
-// Función para agregar una nueva ventas (POST)
+// Función para agregar una nueva venta (POST)
 export const crearVenta = async (venta) => {  
   try {
-    console.log("Enviando venta:", venta);
+    // Asegúrate de que los productos se estén enviando correctamente
+    console.log("Enviando venta con productos:", venta);
+
+    // Envía la venta con los productos al backend
     const response = await axios.post(`${API_URL}/ventas`, venta, {
       headers: {
-        "Content-Type": "application/json", // Agregado para evitar problemas
+        "Content-Type": "application/json", // Agregado para evitar problemas de contenido
       },
     });
     return response.data;
   } catch (error) {
-    console.error("Error eliminando venta:", error);
-
+    console.error("Error creando venta:", error);
+    return null;
   }
 };
 
@@ -41,6 +44,7 @@ export const actualizarVenta = async (id, ventaActualizado) => {
     return response.data;
   } catch (error) {
     console.error("Error al actualizar venta:", error);
+    return null;
   }
 };
 
@@ -51,5 +55,6 @@ export const eliminarVenta = async (id) => {
     return response.data; // Retorna la respuesta del backend (mensaje de éxito, etc.)
   } catch (error) {
     console.error("Error eliminando venta:", error);
+    return null;
   }
 };

@@ -64,7 +64,7 @@ const Detalle_Venta = () => {
       <ul>
         {detalle_ventas.map((detalleventa) => (
           <li key={detalleventa.id}>
-            <strong>ID DetalleVenta:</strong> {detalleventa.id} - <strong>Venta ID:</strong> {detalleventa.venta_id} - <strong>Producto ID:</strong> {detalleventa.producto_id} - <strong>Precio:</strong> {detalleventa.precio} - <strong>SubTotal:</strong> ${detalleventa.subtotal}
+            <strong>ID DetalleVenta:</strong> {detalleventa.id} - <strong>Venta ID:</strong> {detalleventa.venta_id} - <strong>Producto ID:</strong> {detalleventa.producto_id} - <strong>Cantidad:</strong>{detalleventa.cantidad} - <strong>Precio:</strong> {detalleventa.precio} - <strong>SubTotal:</strong> ${detalleventa.subtotal}
             <br />
             <button onClick={() => handleActualizarDetalle_Venta(detalleventa.id)}>Editar</button>
             <button onClick={() => handleEliminarDetalle_Venta(detalleventa.id)}>Eliminar</button>
@@ -84,6 +84,12 @@ const Detalle_Venta = () => {
         placeholder="ID Producto"
         value={nuevaDetalle_Venta.producto_id}
         onChange={(e) => setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, producto_id: e.target.value })}
+      />
+      <input
+        type="number"
+        placeholder="Cantidad"
+        value={nuevaDetalle_Venta.cantidad}
+        onChange={(e) => setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, cantidad: e.target.value })}
       />
       <input
         type="number"
