@@ -9,10 +9,10 @@ export const obtener_ventas = async () => {
     return rows;
 };
 
-export const crear_venta = async (cliente_id, usuario_id, total) => {
+export const crear_venta = async (cliente_id, usuario_id, fecha, total) => {
     const [result] = await db.query(
-        "INSERT INTO Ventas (cliente_id, usuario_id, total) VALUES (?, ?, ?)",
-        [cliente_id, usuario_id, total]
+        "INSERT INTO Ventas (cliente_id, usuario_id, fecha, total) VALUES (?, ?, ?, ?)",
+        [cliente_id, usuario_id, fecha, total]
     );
     return result.insertId; // Retorna el ID de la nueva venta
 };
@@ -20,7 +20,7 @@ export const crear_venta = async (cliente_id, usuario_id, total) => {
 export const actualizar_venta = async (id, cliente_id, usuario_id, total) => {
     const [result] = await db.query(
         "UPDATE Ventas SET cliente_id = ?, usuario_id = ?, total = ? WHERE id = ?",
-        [cliente_id, usuario_id, total, id]
+        [cliente_id, usuario_id, fecha, total, id]
     );
     return result.affectedRows;
 };

@@ -111,7 +111,7 @@ export const crear_Venta = async (req, res) => {
 
     try {
         let total = productos.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-        const venta_id = await crear_venta(cliente_id, usuario_id, total);
+        const venta_id = await crear_venta(cliente_id, usuario_id, fecha, total);
         
         res.status(201).json({ message: "Venta creada correctamente", venta_id });
     } catch (error) {
@@ -122,10 +122,10 @@ export const crear_Venta = async (req, res) => {
 
 export const actualizar_Venta = async (req, res) => {
     const { id } = req.params;
-    const { cliente_id, usuario_id, total } = req.body;
+    const { cliente_id, usuario_id, fecha, total } = req.body;
 
     try {
-        const updatedRows = await actualizar_venta(id, cliente_id, usuario_id, total);
+        const updatedRows = await actualizar_venta(id, cliente_id, usuario_id, fecha, total);
         if (updatedRows === 0) return res.status(404).json({ error: "Venta no encontrada" });
 
         res.json({ message: "Venta actualizada correctamente" });

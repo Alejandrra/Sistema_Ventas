@@ -25,7 +25,8 @@ export const crearVenta = async (venta) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error al crear venta:", error);
+    console.error("Error eliminando venta:", error);
+
   }
 };
 
