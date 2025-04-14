@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from "react-router";
 import Usuarios from "./components/Usuarios";
 import Clientes from "./components/Clientes";
 import Productos from './components/Productos';
@@ -13,6 +14,8 @@ function App() {
       <Usuarios />
       <Clientes />
       <Productos />
+      <>
+      </>
       <Ventas />
       <Detalle_Ventas />
     </div>
