@@ -4,12 +4,14 @@ import Clientes from "./components/Clientes";
 import Productos from './components/Productos';
 import Ventas from "./components/Ventas";
 import Detalle_Ventas from "./components/Detalle_Venta";
+import Login from './components/Login';
 
 
 function App() {
   return (
     <div>
       <h1>Sistema de Ventas</h1>
+      <Route path="/login" element={<Login />} />
       <Usuarios />
       <Clientes />
       <Productos />
