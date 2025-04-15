@@ -11,7 +11,7 @@ function App() {
   return (
     <div>
       <h1>Sistema de Ventas</h1>
-      <Route path="/login" element={<Login />} />
+      <Login/>
       <Usuarios />
       <Clientes />
       <Productos />

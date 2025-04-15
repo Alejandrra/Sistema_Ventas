@@ -24,9 +24,6 @@ const pool = mysql.createPool({
 });
 
 
-
-
-
 pool.getConnection()
     .then(() => console.log("Conectado a MySQL"))
     .catch(err => console.error("Error al conectar a MySQL:", err));
