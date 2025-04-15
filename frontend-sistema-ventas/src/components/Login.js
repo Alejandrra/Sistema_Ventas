@@ -27,7 +27,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita que la página se recargue
     console.log("Correo:", correo, "Contraseña:", contrasena); // Solo para prueba
-    // Aquí podrías llamar a tu backend para autenticar al usuario
+    
   };
 
   return (
