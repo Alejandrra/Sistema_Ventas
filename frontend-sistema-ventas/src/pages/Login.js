@@ -1,114 +1,162 @@
-// Importamos React y useState para manejar estados del formulario
-import React, { useState } from 'react';
-
-// Importamos componentes de MUI para construir la interfaz
+import React from 'react';
 import {
-  Box,           // Contenedor flexible
-  Button,        // Botón
-  TextField,     // Campo de texto
-  Typography,    // Texto estilizado
-  Paper,         // Contenedor con sombra (tarjeta)
-  CssBaseline,   // Normaliza el CSS
-  Avatar,        // Ícono de usuario
-  Container      // Centra y da márgenes automáticos
-} from '@mui/material';
+  Avatar,  // Componente que muestra un avatar circular
+  Button,  // Componente para crear botones
+  TextField, // Componente para campos de texto
+  FormControlLabel, // Componente que envuelve un control con su etiqueta (como un checkbox)
+  Checkbox, // Componente para crear una casilla de verificación
+  Link, // Componente para crear enlaces estilizados
+  Paper, // Componente que crea un panel elevado
+  Box, // Contenedor flexible para organizar elementos
+  Grid, // Componente para crear una cuadrícula y gestionar el diseño
+  Typography, // Componente para gestionar la tipografía (textos)
+} from '@mui/material'; // Importa varios componentes de Material-UI para diseñar la interfaz
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; // importa el icono de candado
+import FacebookIcon from '@mui/icons-material/Facebook'; // importa el icono de facebook
+import GoogleIcon from '@mui/icons-material/Google'; // importa el icono de google
 
-// Icono de candado para el login
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
-// Componente de Login
-const Login = () => {
-
-  // Estados locales para capturar correo y contraseña
-  const [correo, setCorreo] = useState('');
-  const [contrasena, setContrasena] = useState('');
-
-  // Función que se ejecuta al enviar el formulario
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Evita que la página se recargue
-    console.log("Correo:", correo, "Contraseña:", contrasena); // Solo para prueba
-    
-  };
-
+const Login = () => { // Define el componente Login
   return (
-    <Container component="main" maxWidth="xs"> {/* Contenedor centrado y pequeño */}
-      <CssBaseline /> {/* Normaliza el estilo base */}
-
-      {/* Tarjeta del login con fondo oscuro */}
-      <Paper
-        elevation={6} // Nivel de sombra
-        sx={{
-          mt: 8,           // Margen superior
-          p: 4,            // Padding interno
-          bgcolor: '#1e1e1e', // Fondo oscuro
-          color: 'white',  // Texto blanco
-          borderRadius: 3  // Bordes redondeados
+    <Grid // Componente Grid que actúa como contenedor principal
+      container // Define un contenedor que se organiza en una cuadrícula
+      component="main" // se define que Grid es el componente principal
+      sx={{ //Estilos de mui
+        height: '100vh',
+        backgroundColor: '#0d1117',
+        justifyContent: 'center', //Centra los elementos horizontal
+        alignItems: 'center', //Centra los elementos vertical
+      }}
+    >
+      <Grid
+        item // Indica que este Grid es un ítem dentro del contenedor
+        xs={11} // En pantallas pequeñas (xs) ocupará el 11/12 del ancho
+        sm={8} // En pantallas medianas (sm) ocupará el 8/12 del ancho
+        md={5} // En pantallas grandes (md) ocupará el 5/12 del ancho
+        component={Paper} // Usa Paper para crear un panel con sombra
+        elevation={6} // Nivel de sombra del Paper
+        square // Hace que el Paper tenga bordes rectos en lugar de redondeados
+        sx={{ //estilos de mui
+          backgroundColor: '#0d1117',
+          color: 'white',
+          p: 4, // Padding de 4 unidades alrededor del contenido
+          borderRadius: 2, // Bordes redondeados
         }}
       >
-
-        <Box
-          sx={{
-            display: 'flex',          // Flexbox
-            flexDirection: 'column',  // Apilar verticalmente
-            alignItems: 'center'      // Centrar horizontalmente
+        <Box // Componente Box usado para organizar los elementos internos del formulario
+          sx={{ 
+            display: 'flex', // Usa flexbox para disposición de los elementos
+            flexDirection: 'column', // Los elementos se dispondrán en una columna
+            alignItems: 'center', // Centra los elementos horizontalmente
           }}
         >
-          {/* Ícono de candado en la parte superior */}
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          
+          <Avatar
+           //Avatar circular con ícono
+          sx={{ m: 1, bgcolor: '#1976d2' }}> 
+           <LockOutlinedIcon />
 
-          {/* Título del formulario */}
-          <Typography component="h1" variant="h5">
-            Iniciar Sesión
+          </Avatar>
+          <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+            Sign in
           </Typography>
 
-          {/* Formulario */}
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, width: '100%' }}>
-            
-            {/* Campo para el correo */}
-            <TextField
-              fullWidth
-              required
-              label="Correo electrónico"
-              type="email"
-              variant="filled"
-              margin="normal"
-              value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
-              InputProps={{ sx: { color: 'white' } }}         // Estilo del texto
-              InputLabelProps={{ sx: { color: 'white' } }}    // Estilo del label
+          <Box
+          // Define un formulario sin validaciones HTML  
+            component="form" noValidate sx={{ width: '100%' }}>
+            <TextField // Primer campo de texto (Email)
+              margin="normal" // Aplica márgenes normales
+              required // Hace el campo obligatorio
+              fullWidth // Hace que el campo ocupe todo el ancho disponible
+              id="email" // ID del campo para identificarlo en el formulario
+              label="Email" // Etiqueta que aparecerá en el campo
+              name="email" // Nombre del campo, útil para el envío de datos
+              autoComplete="email" // Sugiere la autocompletación del campo con direcciones de correo
+              autoFocus // El campo de Email será el primero en el foco cuando se carga la página
+              InputProps={{ style: { color: 'white' } }} // Estilo para el color del texto ingresado
+              InputLabelProps={{ style: { color: '#aaa' } }} // Estilo para el color de la etiqueta
+              sx={{ backgroundColor: '#161b22', borderRadius: 1 }} // Estilo de fondo y bordes redondeados
             />
 
-            {/* Campo para la contraseña */}
             <TextField
-              fullWidth
-              required
-              label="Contraseña"
-              type="password"
-              variant="filled"
               margin="normal"
-              value={contrasena}
-              onChange={(e) => setContrasena(e.target.value)}
-              InputProps={{ sx: { color: 'white' } }}
-              InputLabelProps={{ sx: { color: 'white' } }}
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password" // Tipo de campo, para que se oculte el texto
+              id="password"
+              autoComplete="current-password" // Sugiere la autocompletación de la contraseña actual
+              InputProps={{ style: { color: 'white' } }}
+              InputLabelProps={{ style: { color: '#aaa' } }}
+              sx={{ backgroundColor: '#161b22', borderRadius: 1 }}
             />
 
-            {/* Botón para enviar */}
-            <Button
+            <FormControlLabel // Etiqueta y control para la casilla de "Recordarme"
+              // Casilla de verificación
+              control={<Checkbox value="remember" sx={{ color: 'white' }} />}
+              label="Remember me"
+            />
+
+            <Button // Botón para enviar el formulario
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 2, mb: 2, backgroundColor: '#c9d1d9', color: '#0d1117' }} // Estilos de margen, color de fondo y texto
             >
-              Entrar
+              Sign in
+            </Button > 
+
+            <Grid
+            // Contenedor para los enlaces 
+              container justifyContent="center"> 
+              <Grid item>
+                <Link 
+                // Enlace para recuperar la contraseña
+                  href="#" variant="body2" sx={{ color: '#58a6ff' }}>
+                  Forgot your password? 
+                </Link>
+              </Grid>
+            </Grid>
+
+            <Button // Botón para iniciar sesión con Google
+              fullWidth
+              variant="outlined"
+              startIcon={<GoogleIcon />} // Ícono de Google
+              sx={{
+                mt: 3,
+                color: 'white',
+                borderColor: '#30363d',
+                '&:hover': { borderColor: '#58a6ff' }, // Cambia el color del borde al pasar el ratón
+              }}
+            >
+              Sign in with Google
             </Button>
+
+            <Button // Botón para iniciar sesión con Facebook
+              fullWidth 
+              variant="outlined"
+              startIcon={<FacebookIcon />} // Ícono de Facebook
+              sx={{
+                mt: 2,
+                color: 'white',
+                borderColor: '#30363d',
+                '&:hover': { borderColor: '#58a6ff' },
+              }}
+            >
+              Sign in with Facebook
+            </Button>
+
+            <Typography variant="body2" align="center" sx={{ mt: 3, color: '#8b949e' }}>
+              Don’t have an account?{' '}
+              <Link href="#" variant="body2" sx={{ color: '#58a6ff' }}>
+                Sign up
+              </Link>
+            </Typography>
           </Box>
         </Box>
-      </Paper>
-    </Container>
+      </Grid>
+    </Grid>
   );
 };
 
-// Exportamos el componente para usarlo en App.js u otras partes
 export default Login;
