@@ -1,5 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { obtenerClientes, crearCliente, actualizarCliente, eliminarCliente } from '../services/api/apiClientes';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+  IconButton,
+  Divider,
+} from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
+import {
+  obtenerClientes,
+  crearCliente,
+  actualizarCliente,
+  eliminarCliente
+} from '../services/api/apiClientes';
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -7,102 +24,139 @@ const Clientes = () => {
     nombre: '',
     correo: '',
     telefono: '',
-    direccion: ''
-
+    direccion: '',
   });
 
-  // Cargar clientes al cargar el componente
   useEffect(() => {
-    cargarClientes(); //obtener la lista de clientes desde el backend.
+    cargarClientes();
   }, []);
-//Funcion para obtener los usuarios de la api
+
   const cargarClientes = async () => {
-    const data = await obtenerClientes(); //hace un GET al backend.
-    setClientes(data); //Guarda los datos en clientes.
+    const data = await obtenerClientes();
+    setClientes(data);
   };
 
   const handleCrearCliente = async () => {
-    if (!nuevoCliente.nombre || !nuevoCliente.correo || !nuevoCliente.telefono || !nuevoCliente.direccion) 
-    {
+    const { nombre, correo, telefono, direccion } = nuevoCliente;
+
+    if (!nombre || !correo || !telefono || !direccion) {
       alert("Completa todos los campos");
       return;
     }
 
     const clienteFormateado = {
-        nombre: nuevoCliente.nombre,
-        correo: nuevoCliente.correo,
-        telefono: parseInt(nuevoCliente.telefono), // Convertir a número entero
-        direccion: nuevoCliente.direccion
-      };
+      nombre,
+      correo,
+      telefono: parseInt(telefono),
+      direccion,
+    };
 
-
-
-    await crearCliente(clienteFormateado); //hace un POST a la API.
+    await crearCliente(clienteFormateado);
     setNuevoCliente({ nombre: '', correo: '', telefono: '', direccion: '' });
-    cargarClientes(); //limpia y actualiza la lista de clientes
+    cargarClientes();
   };
 
   const handleActualizarCliente = async (id) => {
-    const nuevoNombre = prompt("Nuevo nombre:"); 
+    const nuevoNombre = prompt("Nuevo nombre:");
     const nuevoCorreo = prompt("Nuevo correo:");
     const nuevoTelefono = prompt("Nuevo telefono:");
-    const nuevoDireccion = prompt("Nuevo direccion:");
+    const nuevoDireccion = prompt("Nueva dirección:");
 
+    if (!nuevoNombre || !nuevoCorreo || !nuevoTelefono || !nuevoDireccion) return;
 
-    if (!nuevoNombre || !nuevoCorreo || !nuevoTelefono || !nuevoDireccion ) return;
-    await actualizarCliente(id, { nombre: nuevoNombre, correo: nuevoCorreo, telefono: nuevoTelefono, direccion: nuevoDireccion}); //hace un PUT a la API.
-    cargarClientes(); //vuelve a cargar los datos
+    await actualizarCliente(id, {
+      nombre: nuevoNombre,
+      correo: nuevoCorreo,
+      telefono: nuevoTelefono,
+      direccion: nuevoDireccion
+    });
+
+    cargarClientes();
   };
 
   const handleEliminarCliente = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este cliente?")) return;
-    await eliminarCliente(id); //hace un DELATE a la API.
-    cargarClientes(); //vuelve a cargar los datos
+    await eliminarCliente(id);
+    cargarClientes();
   };
 
   return (
-    <div>
-      <h2>Lista de Clientes</h2>
-      <ul>
-        {clientes.map((cliente) => (
-          <li key={cliente.id}>
-            <strong>{cliente.nombre}</strong> - {cliente.correo} <br />
-            {cliente.telefono} | {cliente.direccion} 
-            <br />
-            <button onClick={() => handleActualizarCliente(cliente.id)}>Editar</button>
-            <button onClick={() => handleEliminarCliente(cliente.id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
+    <Container maxWidth="md">
+      <Typography variant="h4" align="center" gutterBottom sx={{ mt: 4 }}>
+        Gestión de Clientes
+      </Typography>
 
-      <h3>Agregar Cliente</h3>
-      <input
-        type="text"
-        placeholder="Nombre"
-        value={nuevoCliente.nombre}
-        onChange={(e) => setNuevoCliente({ ...nuevoCliente, nombre: e.target.value })}
-      />
-      <input
-        type="text"
-        placeholder="Correo"
-        value={nuevoCliente.correo}
-        onChange={(e) => setNuevoCliente({ ...nuevoCliente, correo: e.target.value })}
-      />
-      <input
-        type="number"
-        placeholder="Telefono"
-        value={nuevoCliente.telefono}
-        onChange={(e) => setNuevoCliente({ ...nuevoCliente, telefono: e.target.value })}
-      />
+      {/* Formulario */}
+      <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Agregar Cliente
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Nombre"
+              fullWidth
+              value={nuevoCliente.nombre}
+              onChange={(e) => setNuevoCliente({ ...nuevoCliente, nombre: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Correo"
+              fullWidth
+              value={nuevoCliente.correo}
+              onChange={(e) => setNuevoCliente({ ...nuevoCliente, correo: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Teléfono"
+              fullWidth
+              type="number"
+              value={nuevoCliente.telefono}
+              onChange={(e) => setNuevoCliente({ ...nuevoCliente, telefono: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Dirección"
+              fullWidth
+              value={nuevoCliente.direccion}
+              onChange={(e) => setNuevoCliente({ ...nuevoCliente, direccion: e.target.value })}
+            />
+          </Grid>
+        </Grid>
+        <Box mt={3}>
+          <Button variant="contained" color="primary" fullWidth onClick={handleCrearCliente}>
+            Agregar Cliente
+          </Button>
+        </Box>
+      </Paper>
 
-      <input
-        type="text"
-        placeholder="Direccion"
-        value={nuevoCliente.direccion}
-        onChange={(e) => setNuevoCliente({ ...nuevoCliente, direccion: e.target.value })}
-      />
-            <button onClick={handleCrearCliente}>Agregar</button>
-    </div>
+      {/* Lista de Clientes */}
+      <Typography variant="h6" gutterBottom>
+        Lista de Clientes
+      </Typography>
+      {clientes.map((cliente) => (
+        <Paper key={cliente.id} elevation={1} sx={{ p: 2, mb: 2, borderRadius: 2 }}>
+          <Typography variant="subtitle1">
+            <strong>{cliente.nombre}</strong>
+          </Typography>
+          <Typography variant="body2">{cliente.correo}</Typography>
+          <Typography variant="body2">{cliente.telefono}</Typography>
+          <Typography variant="body2" gutterBottom>{cliente.direccion}</Typography>
+          <Divider sx={{ my: 1 }} />
+          <Box>
+            <IconButton color="primary" onClick={() => handleActualizarCliente(cliente.id)}>
+              <Edit />
+            </IconButton>
+            <IconButton color="error" onClick={() => handleEliminarCliente(cliente.id)}>
+              <Delete />
+            </IconButton>
+          </Box>
+        </Paper>
+      ))}
+    </Container>
   );
 };
 
