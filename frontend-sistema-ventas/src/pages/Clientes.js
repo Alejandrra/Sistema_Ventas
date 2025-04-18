@@ -27,13 +27,15 @@ const Clientes = () => {
     direccion: '',
   });
 
+// Cargar clientes al cargar el componente
   useEffect(() => {
-    cargarClientes();
+    cargarClientes(); //obtener la lista de clientes desde el backend.
   }, []);
 
+  //Funcion para obtener los usuarios de la api
   const cargarClientes = async () => {
-    const data = await obtenerClientes();
-    setClientes(data);
+    const data = await obtenerClientes(); //hace un GET al backend.
+    setClientes(data); //Guarda los datos en clientes
   };
 
   const handleCrearCliente = async () => {
@@ -47,13 +49,13 @@ const Clientes = () => {
     const clienteFormateado = {
       nombre,
       correo,
-      telefono: parseInt(telefono),
+      telefono: parseInt(telefono), // Convertir a número entero
       direccion,
     };
 
-    await crearCliente(clienteFormateado);
+    await crearCliente(clienteFormateado); //hace un POST a la API.
     setNuevoCliente({ nombre: '', correo: '', telefono: '', direccion: '' });
-    cargarClientes();
+    cargarClientes(); //limpia y actualiza la lista de clientes
   };
 
   const handleActualizarCliente = async (id) => {
@@ -71,13 +73,13 @@ const Clientes = () => {
       direccion: nuevoDireccion
     });
 
-    cargarClientes();
+    cargarClientes(); //vuelve a cargar los datos
   };
 
   const handleEliminarCliente = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este cliente?")) return;
-    await eliminarCliente(id);
-    cargarClientes();
+    await eliminarCliente(id); //hace un DELATE a la API.
+    cargarClientes(); //vuelve a cargar los datos
   };
 
   return (
