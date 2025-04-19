@@ -26,14 +26,15 @@ const Usuarios = () => {
     contraseña: '',
     rol: '',
   });
-
+ // Cargar usuarios al cargar el componente
   useEffect(() => {
-    cargarUsuarios();
+    cargarUsuarios(); //obtener la lista de usuarios desde el backend
   }, []);
 
+//Funcion para obtener los usuarios de la api
   const cargarUsuarios = async () => {
-    const data = await obtenerUsuario();
-    setUsuarios(data);
+    const data = await obtenerUsuario(); //hace un GET al backend
+    setUsuarios(data); //Guarda los datos en usuarios
   };
 
   const handleCrearUsuario = async () => {
@@ -44,11 +45,11 @@ const Usuarios = () => {
       return;
     }
 
-    console.log("Datos enviados desde el frontend:", nuevoUsuario);
+    console.log("Datos enviados desde el frontend:", nuevoUsuario); // Debug
 
-    await crearUsuario(nuevoUsuario);
+    await crearUsuario(nuevoUsuario); //hace un POST a la API
     setNuevoUsuario({ nombre: '', correo: '', contraseña: '', rol: '' });
-    cargarUsuarios();
+    cargarUsuarios(); //limpia y actualiza la lista de usuarios
   };
 
   const handleActualizarUsuario = async (id) => {
@@ -66,13 +67,13 @@ const Usuarios = () => {
       rol: nuevoRol,
     });
 
-    cargarUsuarios();
+    cargarUsuarios(); //vuelve a cargar los datos
   };
 
   const handleEliminarUsuario = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este usuario?")) return;
-    await eliminarUsuario(id);
-    cargarUsuarios();
+    await eliminarUsuario(id); //hace un DELATE a la API
+    cargarUsuarios(); //vuelve a cargar los datos
   };
 
   return (
