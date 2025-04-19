@@ -20,14 +20,15 @@ const Productos = () => {
     stock: '',
     categoria: ''
   });
-
+// Cargar productos al cargar el componente
   useEffect(() => {
-    cargarProductos();
+    cargarProductos(); //obtener la lista de productos desde el backend
   }, []);
 
-  const cargarProductos = async () => {
-    const data = await obtenerProductos();
-    setProductos(data);
+//Funcion para obtener los productos de la api
+  const cargarProductos = async () => { 
+    const data = await obtenerProductos(); //hace un GET al backend
+    setProductos(data); //Guarda los datos en productos con setProductos(data)
   };
 
   const handleCrearProducto = async () => {
@@ -40,14 +41,15 @@ const Productos = () => {
     const productoFormateado = {
       nombre,
       descripcion,
-      precio: parseFloat(precio),
-      stock: parseInt(stock),
+      precio: parseFloat(precio), // Convertir a número
+      stock: parseInt(stock), // Convertir a número entero
       categoria
     };
 
-    await crearProducto(productoFormateado);
+    await crearProducto(productoFormateado); //hace un POST a la API.
     setNuevoProducto({ nombre: '', descripcion: '', precio: '', stock: '', categoria: '' });
-    cargarProductos();
+    cargarProductos(); //limpia y actualiza la lista de productos
+
   };
 
   const handleActualizarProducto = async (id) => {
@@ -67,13 +69,13 @@ const Productos = () => {
       categoria: nuevoCategoria
     });
 
-    cargarProductos();
+    cargarProductos(); //vuelve a cargar los datos
   };
 
   const handleEliminarProducto = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este producto?")) return;
-    await eliminarProducto(id);
-    cargarProductos();
+    await eliminarProducto(id); //hace un DELATE a la API.
+    cargarProductos(); //vuelve a cargar los datos
   };
 
   return (
