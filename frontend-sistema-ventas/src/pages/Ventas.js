@@ -146,8 +146,6 @@ const Venta = () => {
             <Card variant="outlined">
               <CardContent>
                 <Typography variant="h6">Venta #{venta.id}</Typography>
-                <Typography>🧑 Cliente ID: {venta.cliente_id}</Typography>
-                <Typography>👨‍💼 Usuario ID: {venta.usuario_id}</Typography>
                 <Typography>📅 Fecha: {venta.fecha}</Typography>
                 <Typography>💰 Total: ${venta.total}</Typography>
 
