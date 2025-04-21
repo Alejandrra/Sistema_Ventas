@@ -1,5 +1,8 @@
-import React from 'react';
+
+import React, { useState } from 'react';
+
 import {loginUsuario} from "../services/api/auth";
+
 import {
   Avatar,  // Componente que muestra un avatar circular
   Button,  // Componente para crear botones
@@ -16,7 +19,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; // importa el i
 import FacebookIcon from '@mui/icons-material/Facebook'; // importa el icono de facebook
 import GoogleIcon from '@mui/icons-material/Google'; // importa el icono de google
 
-const handleSubmit = async (event) => {
+
+
+const Login = () => { // Define el componente Login
+ const [email, setEmail] = useState('');
+ const [password, setPassword] = useState('');
+ 
+ const handleSubmit = async (event) => {
   event.preventDefault();
   const result = await loginUsuario(email, password);
 
@@ -28,7 +37,6 @@ const handleSubmit = async (event) => {
   }
 };
 
-const Login = () => { // Define el componente Login
   return (
     <Grid // Componente Grid que actúa como contenedor principal
       container // Define un contenedor que se organiza en una cuadrícula
@@ -76,6 +84,7 @@ const Login = () => { // Define el componente Login
           <Box
           // Define un formulario sin validaciones HTML  
             component="form" noValidate sx={{ width: '100%' }}>
+
             <TextField // Primer campo de texto (Email)
               margin="normal" // Aplica márgenes normales
               required // Hace el campo obligatorio
@@ -84,7 +93,10 @@ const Login = () => { // Define el componente Login
               label="Email" // Etiqueta que aparecerá en el campo
               name="email" // Nombre del campo, útil para el envío de datos
               autoComplete="email" // Sugiere la autocompletación del campo con direcciones de correo
-              autoFocus // El campo de Email será el primero en el foco cuando se carga la página
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+
+               // El campo de Email será el primero en el foco cuando se carga la página
               InputProps={{ style: { color: 'white' } }} // Estilo para el color del texto ingresado
               InputLabelProps={{ style: { color: '#aaa' } }} // Estilo para el color de la etiqueta
               sx={{ backgroundColor: '#161b22', borderRadius: 1 }} // Estilo de fondo y bordes redondeados
@@ -98,6 +110,9 @@ const Login = () => { // Define el componente Login
               label="Password"
               type="password" // Tipo de campo, para que se oculte el texto
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+
               autoComplete="current-password" // Sugiere la autocompletación de la contraseña actual
               InputProps={{ style: { color: 'white' } }}
               InputLabelProps={{ style: { color: '#aaa' } }}
@@ -114,7 +129,8 @@ const Login = () => { // Define el componente Login
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 2, mb: 2, backgroundColor: '#c9d1d9', color: '#0d1117', fullWidth onClick={handleSubmit} }} // Estilos de margen, color de fondo y texto
+              onClick={handleSubmit}
+              sx={{ mt: 2, mb: 2, backgroundColor: '#c9d1d9', color: '#0d1117' }} // Estilos de margen, color de fondo y texto
             >
               Sign in
             </Button > 
