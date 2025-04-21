@@ -1,4 +1,5 @@
 import React from 'react';
+import {loginUsuario} from "../services/api/auth";
 import {
   Avatar,  // Componente que muestra un avatar circular
   Button,  // Componente para crear botones
@@ -14,6 +15,18 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; // importa el icono de candado
 import FacebookIcon from '@mui/icons-material/Facebook'; // importa el icono de facebook
 import GoogleIcon from '@mui/icons-material/Google'; // importa el icono de google
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  const result = await loginUsuario(email, password);
+
+  if (result.success) {
+    alert('Inicio de sesión exitoso');
+    // redireccionar si quieres
+  } else {
+    alert(`Error: ${result.message}`);
+  }
+};
 
 const Login = () => { // Define el componente Login
   return (
@@ -101,7 +114,7 @@ const Login = () => { // Define el componente Login
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 2, mb: 2, backgroundColor: '#c9d1d9', color: '#0d1117' }} // Estilos de margen, color de fondo y texto
+              sx={{ mt: 2, mb: 2, backgroundColor: '#c9d1d9', color: '#0d1117', fullWidth onClick={handleSubmit} }} // Estilos de margen, color de fondo y texto
             >
               Sign in
             </Button > 
