@@ -26,12 +26,12 @@ import GoogleIcon from '@mui/icons-material/Google'; // importa el icono de goog
 
 const Login = () => { // Define el componente Login
  const navigate = useNavigate();
- const [email, setEmail] = useState('');
- const [password, setPassword] = useState('');
+ const [correo, setEmail] = useState('');
+ const [contraseña, setPassword] = useState('');
  
  const handleSubmit = async (event) => {
   event.preventDefault();
-  const result = await loginUsuario(email, password);
+  const result = await loginUsuario(correo, contraseña);
 
   if (result.success) {
     alert('Inicio de sesión exitoso');
@@ -97,7 +97,7 @@ const Login = () => { // Define el componente Login
               label="Email" // Etiqueta que aparecerá en el campo
               name="email" // Nombre del campo, útil para el envío de datos
               autoComplete="email" // Sugiere la autocompletación del campo con direcciones de correo
-              value={email}
+              value={correo}
               onChange={(e) => setEmail(e.target.value)}
 
                // El campo de Email será el primero en el foco cuando se carga la página
@@ -114,7 +114,7 @@ const Login = () => { // Define el componente Login
               label="Password"
               type="password" // Tipo de campo, para que se oculte el texto
               id="password"
-              value={password}
+              value={contraseña}
               onChange={(e) => setPassword(e.target.value)}
 
               autoComplete="current-password" // Sugiere la autocompletación de la contraseña actual
