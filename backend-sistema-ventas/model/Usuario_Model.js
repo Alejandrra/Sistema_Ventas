@@ -1,4 +1,5 @@
 import db from '../config/db.js';
+import bcrypt from 'bcryptjs'; // para encriptar las contrasenas
 // Obtener todos los usuarios
 export const obtener_usuarios = async () => {
     const [rows] = await db.query('SELECT * FROM Usuarios');
@@ -13,7 +14,8 @@ export const obtener_usuarios_id = async (id) => {
 
 // Crear un nuevo usuario
 export const crear_usuario = async (nombre, correo, contraseña, rol) => {
-    const [result] = await db.query('INSERT INTO Usuarios (nombre, correo, contraseña, rol) VALUES (?, ?, ?, ?)', [nombre, correo, contraseña, rol]);
+    const contraseñaHasheada = await bcrypt.hash(contraseña, 10); // Encriptar la contraseña
+    const [result] = await db.query('INSERT INTO Usuarios (nombre, correo, contraseña, rol) VALUES (?, ?, ?, ?)', [nombre, correo, contraseñaHasheada, rol]); // Usar la contraseña encriptada
     return result.insertId;
 };
 

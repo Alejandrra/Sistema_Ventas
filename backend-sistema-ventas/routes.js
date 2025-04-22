@@ -5,11 +5,16 @@ import express from "express";
 import pool from "./config/db.js";
 const router = express.Router();
 
+import { login_usuario, registrar_usuario } from '../controllers/auth_controller.js';
+
 import usuariosRoutes from './routes/usuarios_routes.js';
 import clientesRoutes from './routes/clientes_routes.js';
 import productosRoutes from './routes/productos_routes.js';
 import ventasRoutes from './routes/ventas_routes.js';
 import detalleventasRoutes from './routes/detalle_ventas_routes.js';
+
+router.post('/login', login_usuario); //llamamos a la ruta login
+router.post('/register', registrar_usuario); //llamamos a la ruta registro
 
 router.use('/usuarios', usuariosRoutes); //llamamos a la ruta
 router.use('/clientes', clientesRoutes); //llamamos a la ruta
