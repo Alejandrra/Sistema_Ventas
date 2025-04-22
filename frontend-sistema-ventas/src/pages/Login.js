@@ -3,13 +3,16 @@ import React, { useState } from 'react';
 
 import {loginUsuario} from "../services/api/auth";
 
+import { useNavigate } from 'react-router-dom'; // para que me redirija al inicio
+
+import { Link } from 'react-router-dom';  // Asegúrate de importar Link de react-router-dom
+
 import {
   Avatar,  // Componente que muestra un avatar circular
   Button,  // Componente para crear botones
   TextField, // Componente para campos de texto
   FormControlLabel, // Componente que envuelve un control con su etiqueta (como un checkbox)
   Checkbox, // Componente para crear una casilla de verificación
-  Link, // Componente para crear enlaces estilizados
   Paper, // Componente que crea un panel elevado
   Box, // Contenedor flexible para organizar elementos
   Grid, // Componente para crear una cuadrícula y gestionar el diseño
@@ -22,6 +25,7 @@ import GoogleIcon from '@mui/icons-material/Google'; // importa el icono de goog
 
 
 const Login = () => { // Define el componente Login
+ const navigate = useNavigate();
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
  
@@ -31,7 +35,7 @@ const Login = () => { // Define el componente Login
 
   if (result.success) {
     alert('Inicio de sesión exitoso');
-    // redireccionar si quieres
+    navigate('/inicio');
   } else {
     alert(`Error: ${result.message}`);
   }
@@ -177,7 +181,7 @@ const Login = () => { // Define el componente Login
 
             <Typography variant="body2" align="center" sx={{ mt: 3, color: '#8b949e' }}>
               Don’t have an account?{' '}
-              <Link href="#" variant="body2" sx={{ color: '#58a6ff' }}>
+              <Link to="/registro"  href="#" variant="body2" sx={{ color: '#58a6ff' }}>
                 Sign up
               </Link>
             </Typography>

@@ -1,21 +1,34 @@
-//una barra de menú que aparece en la parte superior de la aplicación y  permite
-//  moverte entre las diferentes páginas fácilmente, sin recargar la página completa
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppBar, Toolbar, Button } from '@mui/material';
 
 const Navbar = () => {
+  const isAuthenticated = localStorage.getItem('token');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
-    <nav style={{ padding: '10px', backgroundColor: '#333', color: 'white' }}>
-      <Link to="/" style={{ margin: '0 10px', color: 'white' }}>Inicio</Link>
-      <Link to="/login" style={{ margin: '0 10px', color: 'white' }}>Login</Link>
-      <Link to="/clientes" style={{ margin: '0 10px', color: 'white' }}>Clientes</Link>
-      <Link to="/usuarios" style={{ margin: '0 10px', color: 'white' }}>Usuarios</Link>
-      <Link to="/productos" style={{ margin: '0 10px', color: 'white' }}>Productos</Link>
-      <Link to="/ventas" style={{ margin: '0 10px', color: 'white' }}>Ventas</Link>
-      <Link to="/detalle_venta" style={{ margin: '0 10px', color: 'white' }}>Detalle_Venta</Link>
-     
-    </nav>
+    <AppBar position="static" sx={{ backgroundColor: '#333' }}>
+      <Toolbar>
+        {isAuthenticated ? (
+          <>
+            <Button component={Link} to="/inicio" sx={{ color: 'white', margin: '0 10px' }}>Inicio</Button>
+            <Button component={Link} to="/clientes" sx={{ color: 'white', margin: '0 10px' }}>Clientes</Button>
+            <Button component={Link} to="/usuarios" sx={{ color: 'white', margin: '0 10px' }}>Usuarios</Button>
+            <Button component={Link} to="/productos" sx={{ color: 'white', margin: '0 10px' }}>Productos</Button>
+            <Button component={Link} to="/ventas" sx={{ color: 'white', margin: '0 10px' }}>Ventas</Button>
+            <Button component={Link} to="/detalle_venta" sx={{ color: 'white', margin: '0 10px' }}>Detalle Venta</Button>
+            <Button onClick={handleLogout} sx={{ color: 'white', margin: '0 10px' }}>Cerrar sesión</Button>
+          </>
+        ) : (
+          <Button component={Link} to="/login" sx={{ color: 'white', margin: '0 10px' }}>Login</Button>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 

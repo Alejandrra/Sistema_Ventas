@@ -17,3 +17,19 @@ export const loginUsuario = async (email, password) => {
     return { success: false, message: error.response?.data?.message || 'Error desconocido' };
   }
 };
+
+export const registroUsuario = async (nombre, correo, contraseña, rol) => {
+  try {
+    const response = await axios.post(`${API_URL}/usuarios`, {
+      nombre,
+      correo,
+      contraseña,
+      rol,
+    });
+
+    return { success: true, message: 'Usuario registrado exitosamente' };
+  } catch (error) {
+    console.error('Error al registrar usuario:', error);
+    return { success: false, message: error.response?.data?.message || 'Error desconocido' };
+  }
+};

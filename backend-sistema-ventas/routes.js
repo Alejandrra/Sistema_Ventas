@@ -5,7 +5,7 @@ import express from "express";
 import pool from "./config/db.js";
 const router = express.Router();
 
-import { login_usuario, registrar_usuario } from '../controllers/auth_controller.js';
+import { login_usuario, registrar_usuario } from './controllers/auth_controller.js';
 
 import usuariosRoutes from './routes/usuarios_routes.js';
 import clientesRoutes from './routes/clientes_routes.js';
