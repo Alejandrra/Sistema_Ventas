@@ -5,6 +5,13 @@ export const obtener_productos = async () => {
     return results;
 };
 
+// Obtener un usuario por ID
+export const obtener_productos_id = async (id) => {
+    const [rows] = await db.query('SELECT * FROM Productos WHERE id = ?', [id]);
+    return rows.length > 0 ? rows[0] : null;
+};
+
+
 // Crear un nuevo producto
 export const crear_producto = async (nombre, descripcion, precio, stock, categoria) => {
     const [results] = await db.query(

@@ -1,5 +1,5 @@
 //const db = require('./db'); 
-import { obtener_productos, crear_producto, actualizar_producto, eliminar_producto } from '../model/Productos_Model.js';
+import { obtener_productos, obtener_productos_id, crear_producto, actualizar_producto, eliminar_producto } from '../model/Productos_Model.js';
 
 // Obtener todos los productos
 export const obtener_Productos = async (req, res) => {
@@ -11,6 +11,17 @@ export const obtener_Productos = async (req, res) => {
     }
 };
 
+// Obtener un cliente por ID
+export const obtener_Producto_Id = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const producto = await obtener_productos_id(id);
+        if (!producto) return res.status(404).json({ mensaje: 'Producto no encontrado' });
+        res.json(producto);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 
 // Crear un nuevo producto
 export const crear_Producto = async (req, res) => {
