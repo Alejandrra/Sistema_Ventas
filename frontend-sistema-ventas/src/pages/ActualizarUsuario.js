@@ -1,41 +1,40 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import { obtenerClientePorId, actualizarCliente } from '../services/api/apiClientes';
+import { obtenerUsuarioPorId, actualizarUsuario } from '../services/api/apiUsuarios';
 
-const EditarCliente = () => {
+const EditarUsuario = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [cliente, setCliente] = useState({
+  const [usuario, setUsuario] = useState({
     nombre: '',
     correo: '',
-    telefono: '',
-    direccion: ''
+    contraseña: '',
+    rol: ''
   });
 
   useEffect(() => {
-    obtenerClientePorId(id).then((data) => setCliente(data));
+    obtenerUsuarioPorId(id).then((data) => setUsuario(data));
   }, [id]);
 
   const handleChange = (e) => {
-    setCliente({ ...cliente, [e.target.name]: e.target.value });
+    setUsuario({ ...usuario, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await actualizarCliente(id, cliente);
-    navigate('/clientes'); // Vuelve al listado
+    await actualizarUsuario(id, usuario);
+    navigate('/usuarios'); // Vuelve al listado de usuarios
   };
 
   return (
     <Box sx={{ maxWidth: 500, mx: 'auto', mt: 5 }}>
-      <Typography variant="h5" gutterBottom>Editar Cliente</Typography>
+      <Typography variant="h5" gutterBottom>Editar Usuario</Typography>
       <form onSubmit={handleSubmit}>
         <TextField
           label="Nombre"
           name="nombre"
-          value={cliente.nombre}
+          value={usuario.nombre}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -43,23 +42,24 @@ const EditarCliente = () => {
         <TextField
           label="Correo"
           name="correo"
-          value={cliente.correo}
+          value={usuario.correo}
           onChange={handleChange}
           fullWidth
           margin="normal"
         />
         <TextField
-          label="Teléfono"
-          name="telefono"
-          value={cliente.telefono}
+          label="Contraseña"
+          name="contraseña"
+          type="password"
+          value={usuario.contraseña}
           onChange={handleChange}
           fullWidth
           margin="normal"
         />
         <TextField
-          label="Direccion"
-          name="direccion"
-          value={cliente.direccion}
+          label="Rol"
+          name="rol"
+          value={usuario.rol}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -70,4 +70,4 @@ const EditarCliente = () => {
   );
 };
 
-export default EditarCliente;
+export default EditarUsuario;

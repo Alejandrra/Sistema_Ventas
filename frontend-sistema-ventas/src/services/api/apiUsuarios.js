@@ -14,6 +14,16 @@ export const obtenerUsuario = async () => {
   }
 };
 
+export const obtenerUsuarioPorId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/usuarios/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener usuario por ID:", error);
+    return null;
+  }
+};
+
 // Función para agregar un nuevo usuario (POST)
 export const crearUsuario = async (usuario) => {  
   try {

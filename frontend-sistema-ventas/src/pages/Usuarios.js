@@ -14,9 +14,9 @@ import { Delete, Edit } from '@mui/icons-material';
 import {
   obtenerUsuario,
   crearUsuario,
-  actualizarUsuario,
   eliminarUsuario
 } from '../services/api/apiUsuarios';
+import { Link } from 'react-router-dom';
 
 const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -51,7 +51,7 @@ const Usuarios = () => {
     setNuevoUsuario({ nombre: '', correo: '', contraseña: '', rol: '' });
     cargarUsuarios(); //limpia y actualiza la lista de usuarios
   };
-
+/*
   const handleActualizarUsuario = async (id) => {
     const nuevoNombre = prompt("Nuevo nombre:");
     const nuevoCorreo = prompt("Nuevo correo:");
@@ -69,7 +69,7 @@ const Usuarios = () => {
 
     cargarUsuarios(); //vuelve a cargar los datos
   };
-
+*/
   const handleEliminarUsuario = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este usuario?")) return;
     await eliminarUsuario(id); //hace un DELATE a la API
@@ -143,9 +143,11 @@ const Usuarios = () => {
           <Typography variant="body2" gutterBottom>Rol: {usuario.rol}</Typography>
           <Divider sx={{ my: 1 }} />
           <Box>
-            <IconButton color="primary" onClick={() => handleActualizarUsuario(usuario.id)}>
+            <Link to={`/usuarios/editar/${usuario.id}`}>
+            <IconButton color="primary" >
               <Edit />
             </IconButton>
+            </Link>
             <IconButton color="error" onClick={() => handleEliminarUsuario(usuario.id)}>
               <Delete />
             </IconButton>
