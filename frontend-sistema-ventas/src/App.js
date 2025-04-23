@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Navbar from './components/MNavegacion';
 import Registro from './pages/Registro';
 import Bienvenida from './pages/Bienvenido';
+import ActualizarCliente from './pages/ActualizarCliente';
 
 function App() {
   // Verificar si el token existe en el localStorage
@@ -30,6 +31,8 @@ function App() {
 
         {/* Rutas protegidas */}
         <Route path="/clientes" element={isAuthenticated ? <Clientes /> : <Navigate to="/login" />} />
+        <Route path="/clientes/editar/:id" element={isAuthenticated ? <ActualizarCliente/>: <Navigate to="/login" />} />
+
         <Route path="/usuarios" element={isAuthenticated ? <Usuarios /> : <Navigate to="/login" />} />
         <Route path="/productos" element={isAuthenticated ? <Productos /> : <Navigate to="/login" />} />
         <Route path="/ventas" element={isAuthenticated ? <Ventas /> : <Navigate to="/login" />} />

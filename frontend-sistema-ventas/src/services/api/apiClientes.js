@@ -3,7 +3,7 @@ import axios from 'axios';
 // URL base del backend (ajústala según la configuración de tu servidor)
 const API_URL = 'http://localhost:5000/api';
 
-// Función para obtener todos los clientes (GET)
+// Función para obtener todos los clientes (ET)
 export const obtenerClientes = async () => {
   try {
     const response = await axios.get(`${API_URL}/clientes`); 
@@ -11,6 +11,17 @@ export const obtenerClientes = async () => {
   } catch (error) {
     console.error("Error al obtener clientes:", error);
     return []; // En caso de error, retorna un arreglo vacío
+  }
+};
+
+// Función para obtener los clientes por  id
+export const obtenerClientePorId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/clientes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener cliente por ID:", error);
+    return null;
   }
 };
 

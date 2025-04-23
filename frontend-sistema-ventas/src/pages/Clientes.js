@@ -14,9 +14,11 @@ import { Delete, Edit } from '@mui/icons-material';
 import {
   obtenerClientes,
   crearCliente,
-  actualizarCliente,
   eliminarCliente
 } from '../services/api/apiClientes';
+import { Link } from 'react-router-dom';
+
+
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -58,6 +60,7 @@ const Clientes = () => {
     cargarClientes(); //limpia y actualiza la lista de clientes
   };
 
+/*
   const handleActualizarCliente = async (id) => {
     const nuevoNombre = prompt("Nuevo nombre:");
     const nuevoCorreo = prompt("Nuevo correo:");
@@ -75,6 +78,7 @@ const Clientes = () => {
 
     cargarClientes(); //vuelve a cargar los datos
   };
+*/
 
   const handleEliminarCliente = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este cliente?")) return;
@@ -149,9 +153,11 @@ const Clientes = () => {
           <Typography variant="body2" gutterBottom>{cliente.direccion}</Typography>
           <Divider sx={{ my: 1 }} />
           <Box>
-            <IconButton color="primary" onClick={() => handleActualizarCliente(cliente.id)}>
+            <Link to={`/clientes/editar/${cliente.id}`}>
+            <IconButton color="primary">
               <Edit />
             </IconButton>
+            </Link>
             <IconButton color="error" onClick={() => handleEliminarCliente(cliente.id)}>
               <Delete />
             </IconButton>
