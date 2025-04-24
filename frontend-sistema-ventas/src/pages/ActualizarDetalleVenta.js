@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   obtenerDetalleVentaPorId,
   actualizarDetalle_Ventas,
@@ -24,14 +24,29 @@ const EditorDetalleVenta = () => {
     subtotal: "",
   });
 
-  useEffect(() => {
-    cargarDetalleVenta();
+  const [loading, setLoading] = useState(true); // Estado para manejar la carga
+
+  // Usamos useCallback para memorizar la función y evitar el warning
+  const cargarDetalleVenta = useCallback(async () => {
+    try {
+      console.log("Cargando detalle de venta con id:", id);  // Verificar que el id es correcto
+      const data = await obtenerDetalleVentaPorId(id); // Función para obtener el detalle de la venta por ID
+      console.log("Detalle de venta cargado:", data); // Verificar los datos cargados
+      if (data) {
+        setDetalleVenta(data);
+      } else {
+        console.error("No se encontró el detalle de la venta.");
+      }
+    } catch (error) {
+      console.error("Error al cargar el detalle de venta:", error);
+    } finally {
+      setLoading(false); // Terminar el estado de carga
+    }
   }, [id]);
 
-  const cargarDetalleVenta = async () => {
-    const data = await obtenerDetalleVentaPorId(id); // Función para obtener el detalle de la venta por ID
-    setDetalleVenta(data);
-  };
+  useEffect(() => {
+    cargarDetalleVenta(); // Llamamos a la función para cargar los datos
+  }, [id, cargarDetalleVenta]); // Añadimos 'cargarDetalleVenta' como dependencia
 
   const handleActualizarDetalleVenta = async () => {
     const { venta_id, producto_id, cantidad, precio, subtotal } = detalleVenta;
@@ -49,9 +64,18 @@ const EditorDetalleVenta = () => {
       subtotal: parseFloat(subtotal),
     };
 
-    await actualizarDetalle_Ventas(id, detalleFormateado); // Llamar para actualizar el detalle
-    navigate("/detalle_venta"); // Redirigir después de la actualización
+    try {
+      await actualizarDetalle_Ventas(id, detalleFormateado); // Llamar para actualizar el detalle
+      navigate("/detalle_venta"); // Redirigir después de la actualización
+    } catch (error) {
+      console.error("Error al actualizar el detalle de venta:", error);
+    }
   };
+
+  // Si los datos aún se están cargando, mostrar un mensaje de carga
+  if (loading) {
+    return <Typography>Cargando...</Typography>;
+  }
 
   return (
     <Box sx={{ maxWidth: "1000px", margin: "auto", padding: 4 }}>
@@ -129,4 +153,3 @@ const EditorDetalleVenta = () => {
 };
 
 export default EditorDetalleVenta;
-
