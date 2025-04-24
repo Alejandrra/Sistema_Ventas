@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   obtenerDetalle_Ventas,
   crearDetalle_Ventas,
-  actualizarDetalle_Ventas,
   eliminarDetalle_Ventas,
 } from "../services/api/apiDetalle_Ventas";
+import { Link } from 'react-router-dom';
 import {
   Box,
   TextField,
@@ -62,7 +62,7 @@ const Detalle_Venta = () => {
     });
     cargarDetalle_Ventas();
   };
-
+/*
   const handleActualizarDetalle_Venta = async (id) => {
     const nuevoVentaId = prompt("Nuevo Venta ID:");
     const nuevoProductoId = prompt("Nuevo Producto ID:");
@@ -82,6 +82,7 @@ const Detalle_Venta = () => {
 
     cargarDetalle_Ventas();
   };
+*/
 
   const handleEliminarDetalle_Venta = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este detalle venta?")) return;
@@ -182,9 +183,9 @@ const Detalle_Venta = () => {
               />
             </ListItem>
             <Box sx={{ display: "flex", gap: 1, paddingLeft: 2 }}>
-              <Button variant="outlined" color="primary" onClick={() => handleActualizarDetalle_Venta(detalle.id)}>
-                Editar
-              </Button>
+              <Link to={`detalle_venta/editar/${detalle.id}`} style={{ textDecoration: 'none' }}>
+                <Button variant="outlined" size="small">Editar</Button>
+              </Link>
               <Button variant="outlined" color="error" onClick={() => handleEliminarDetalle_Venta(detalle.id)}>
                 Eliminar
               </Button>

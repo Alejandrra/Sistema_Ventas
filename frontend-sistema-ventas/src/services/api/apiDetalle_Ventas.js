@@ -14,6 +14,16 @@ export const obtenerDetalle_Ventas = async () => {
   }
 };
 
+export const obtenerDetalleVentaPorId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/detalle_venta/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener detalle ventas por ID:", error);
+    return null;
+  }
+};
+
 // Función para agregar un nuevo detalleVentas (POST)
 export const crearDetalle_Ventas = async (detalle_ventas) => {  
   try {

@@ -44,7 +44,6 @@ const EditarVenta = () => {
         total: parseFloat(venta.total),
         fecha: venta.fecha + ":00"
       });
-      alert("Venta actualizada correctamente");
       navigate("/ventas");
     } catch (error) {
       console.error("Error al actualizar venta:", error);

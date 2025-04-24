@@ -13,6 +13,7 @@ import ActualizarCliente from './pages/ActualizarCliente';
 import ActualizarUsuario from './pages/ActualizarUsuario';
 import ActualizarProducto from './pages/ActualizarProducto';
 import ActualizarVenta from './pages/ActualizarVenta';
+import ActualizarDetalleVenta from './pages/ActualizarDetalleVenta';
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
         <Route path="/ventas/editar/:id" element={isAuthenticated ? <ActualizarVenta/>: <Navigate to="/login" />} />
 
         <Route path="/detalle_venta" element={isAuthenticated ? <Detalle_Ventas /> : <Navigate to="/login" />} />
+        <Route path="detalle_venta/editar/:id" element={isAuthenticated ? <ActualizarDetalleVenta/>: <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
