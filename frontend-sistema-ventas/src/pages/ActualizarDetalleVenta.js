@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
-import {
-  obtenerDetalleVentaPorId,
-  actualizarDetalle_Ventas,
-} from "../services/api/apiDetalle_Ventas";
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { obtenerDetalleVentaPorId, actualizarDetalle_Ventas } from "../services/api/apiDetalle_Ventas";
 import {
   Box,
   TextField,
@@ -16,6 +13,8 @@ import {
 const EditorDetalleVenta = () => {
   const { id } = useParams(); // Obtener el id de la URL
   const navigate = useNavigate();
+  
+  // Estado para almacenar los datos del detalle de la venta
   const [detalleVenta, setDetalleVenta] = useState({
     venta_id: "",
     producto_id: "",
@@ -24,35 +23,36 @@ const EditorDetalleVenta = () => {
     subtotal: "",
   });
 
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga
+  const [loading, setLoading] = useState(true); // Estado de carga de la solicitud
 
-  // Usamos useCallback para memorizar la función y evitar el warning
+  // Función para cargar el detalle de la venta
   const cargarDetalleVenta = useCallback(async () => {
     try {
-      console.log("Cargando detalle de venta con id:", id);  // Verificar que el id es correcto
-      const data = await obtenerDetalleVentaPorId(id); // Función para obtener el detalle de la venta por ID
-      console.log("Detalle de venta cargado:", data); // Verificar los datos cargados
+      const data = await obtenerDetalleVentaPorId(id); // Obtener datos del detalle de la venta
       if (data) {
-        setDetalleVenta(data);
+        setDetalleVenta(data); // Establecer los datos en el estado
       } else {
-        console.error("No se encontró el detalle de la venta.");
+        console.error("Detalle de venta no encontrado");
       }
     } catch (error) {
-      console.error("Error al cargar el detalle de venta:", error);
+      console.error("Error al cargar detalle de venta:", error);
     } finally {
-      setLoading(false); // Terminar el estado de carga
+      setLoading(false); // Cambiar el estado de carga
     }
   }, [id]);
 
+  // Efecto para cargar los datos cuando el id cambia
   useEffect(() => {
-    cargarDetalleVenta(); // Llamamos a la función para cargar los datos
-  }, [id, cargarDetalleVenta]); // Añadimos 'cargarDetalleVenta' como dependencia
+    cargarDetalleVenta();
+  }, [id, cargarDetalleVenta]);
 
+  // Función para manejar la actualización del detalle de la venta
   const handleActualizarDetalleVenta = async () => {
     const { venta_id, producto_id, cantidad, precio, subtotal } = detalleVenta;
 
+    // Validaciones de los campos
     if (!venta_id || !producto_id || !cantidad || !precio || !subtotal) {
-      alert("Completa todos los campos");
+      alert("Completa todos los campos.");
       return;
     }
 
@@ -65,14 +65,14 @@ const EditorDetalleVenta = () => {
     };
 
     try {
-      await actualizarDetalle_Ventas(id, detalleFormateado); // Llamar para actualizar el detalle
+      await actualizarDetalle_Ventas(id, detalleFormateado); // Llamar al API para actualizar
       navigate("/detalle_venta"); // Redirigir después de la actualización
     } catch (error) {
       console.error("Error al actualizar el detalle de venta:", error);
     }
   };
 
-  // Si los datos aún se están cargando, mostrar un mensaje de carga
+  // Si aún está cargando los datos, mostrar un mensaje de carga
   if (loading) {
     return <Typography>Cargando...</Typography>;
   }
@@ -142,7 +142,11 @@ const EditorDetalleVenta = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" onClick={handleActualizarDetalleVenta}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleActualizarDetalleVenta}
+            >
               Actualizar Detalle Venta
             </Button>
           </Grid>
