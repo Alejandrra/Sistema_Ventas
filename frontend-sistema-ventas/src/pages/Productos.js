@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { obtenerProductos, crearProducto, actualizarProducto, eliminarProducto } from '../services/api/apiProductos';
+import { obtenerProductos, crearProducto, eliminarProducto } from '../services/api/apiProductos';
 import {
   Box,
   Card,
@@ -10,6 +10,8 @@ import {
   Grid,
   Stack
 } from '@mui/material';
+
+import { Link } from 'react-router-dom';
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -51,7 +53,7 @@ const Productos = () => {
     cargarProductos(); //limpia y actualiza la lista de productos
 
   };
-
+/*
   const handleActualizarProducto = async (id) => {
     const nuevoPrecio = prompt("Nuevo precio:");
     const nuevoStock = prompt("Nuevo stock:");
@@ -71,7 +73,7 @@ const Productos = () => {
 
     cargarProductos(); //vuelve a cargar los datos
   };
-
+*/
   const handleEliminarProducto = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este producto?")) return;
     await eliminarProducto(id); //hace un DELATE a la API.
@@ -92,7 +94,9 @@ const Productos = () => {
                 <Typography variant="body2">💲{producto.precio} | Stock: {producto.stock}</Typography>
                 <Typography variant="body2">Categoría: {producto.categoria}</Typography>
                 <Stack direction="row" spacing={1} mt={2}>
-                  <Button variant="outlined" size="small" onClick={() => handleActualizarProducto(producto.id)}>Editar</Button>
+                <Link to={`/productos/editar/${producto.id}`} style={{ textDecoration: 'none' }}>
+                  <Button variant="outlined" size="small">Editar</Button>
+                </Link>
                   <Button variant="contained" color="error" size="small" onClick={() => handleEliminarProducto(producto.id)}>Eliminar</Button>
                 </Stack>
               </CardContent>

@@ -11,6 +11,8 @@ import Registro from './pages/Registro';
 import Bienvenida from './pages/Bienvenido';
 import ActualizarCliente from './pages/ActualizarCliente';
 import ActualizarUsuario from './pages/ActualizarUsuario';
+import ActualizarProducto from './pages/ActualizarProducto';
+
 
 function App() {
   // Verificar si el token existe en el localStorage
@@ -38,6 +40,8 @@ function App() {
         <Route path="/usuarios/editar/:id" element={isAuthenticated ? <ActualizarUsuario/>: <Navigate to="/login" />} />
         
         <Route path="/productos" element={isAuthenticated ? <Productos /> : <Navigate to="/login" />} />
+        <Route path="/productos/editar/:id" element={isAuthenticated ? <ActualizarProducto/>: <Navigate to="/login" />} />
+
         <Route path="/ventas" element={isAuthenticated ? <Ventas /> : <Navigate to="/login" />} />
         <Route path="/detalle_venta" element={isAuthenticated ? <Detalle_Ventas /> : <Navigate to="/login" />} />
       </Routes>

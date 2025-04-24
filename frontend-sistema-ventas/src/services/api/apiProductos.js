@@ -14,6 +14,17 @@ export const obtenerProductos = async () => {
   }
 };
 
+// Función para obtener los productos por  id
+export const obtenerProductoPorId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/productos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener productos por ID:", error);
+    return null;
+  }
+};
+
 // Función para agregar un nuevo producto (POST)
 export const crearProducto = async (producto) => {  
   try {
