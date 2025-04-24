@@ -14,6 +14,16 @@ export const obtenerVentas = async () => {
   }
 };
 
+export const obtenerVentaPorId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/ventas/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener ventas por ID:", error);
+    return null;
+  }
+};
+
 // Función para agregar una nueva venta (POST)
 export const crearVenta = async (venta) => {  
   try {

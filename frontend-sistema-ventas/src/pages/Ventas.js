@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   obtenerVentas,
   crearVenta,
-  actualizarVenta,
   eliminarVenta,
 } from "../services/api/apiVentas";
 import {
@@ -19,6 +18,7 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
+import { Link } from 'react-router-dom';
 
 const Venta = () => {
   const [ventas, setVentas] = useState([]);
@@ -42,13 +42,14 @@ const Venta = () => {
   const cargarVentas = async () => {
     try {
       const data = await obtenerVentas();
+      console.log("Ventas cargadas:", data); // Verifica que los datos son correctos
       setVentas(data);
     } catch (error) {
       console.error("Error al cargar ventas:", error);
     }
   };
 
-// Función para formatear la fecha correctamente
+  // Función para formatear la fecha correctamente
   const formatearFecha = (fecha) => {
     return fecha ? fecha.replace("T", " ") + ":00" : null;
   };
@@ -76,12 +77,13 @@ const Venta = () => {
       await crearVenta(ventaFormateada);
       alert("Venta creada correctamente");
       setNuevaVenta({ cliente_id: "", usuario_id: "", fecha: "", total: "", productos: [] }); // Limpiar después de agregar
-      cargarVentas();
+      cargarVentas(); // Recargar ventas después de crear una nueva
     } catch (error) {
       console.error("Error al crear venta:", error);
     }
   };
-// Función para agregar un producto a la venta
+
+  // Función para agregar un producto a la venta
   const handleAgregarProducto = () => {
     if (!producto.producto_id || !producto.cantidad || !producto.precio) {
       alert("Completa todos los campos del producto.");
@@ -102,33 +104,12 @@ const Venta = () => {
     setProducto({ producto_id: "", cantidad: "", precio: "" }); // Limpiar campos de producto
   };
 
-  const handleActualizarVenta = async (id) => {
-    const nuevoClienteId = prompt("Nuevo Cliente ID:");
-    const nuevoUsuarioId = prompt("Nuevo Usuario ID:");
-    const nuevaFecha = prompt("Nueva Fecha (YYYY-MM-DD HH:MM:SS):");
-    const nuevoTotal = prompt("Nuevo Total:");
-
-    if (!nuevoClienteId || !nuevoUsuarioId || !nuevaFecha || !nuevoTotal) return;
-
-    try {
-      await actualizarVenta(id, {
-        cliente_id: nuevoClienteId,
-        usuario_id: nuevoUsuarioId,
-        fecha: nuevaFecha,
-        total: parseFloat(nuevoTotal),
-      });
-      cargarVentas();
-    } catch (error) {
-      console.error("Error al actualizar venta:", error);
-    }
-  };
-
   const handleEliminarVenta = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar esta venta?")) return;
 
     try {
       await eliminarVenta(id);
-      cargarVentas();
+      cargarVentas(); // Recargar ventas después de eliminar una
     } catch (error) {
       console.error("Error al eliminar venta:", error);
     }
@@ -146,17 +127,18 @@ const Venta = () => {
             <Card variant="outlined">
               <CardContent>
                 <Typography variant="h6">Venta #{venta.id}</Typography>
-                <Typography>📅 Fecha: {venta.fecha}</Typography>
+                <Typography>📅 Id_cliente: {venta.id_cliente}</Typography>
+                <Typography>💰 Id_usuario: {venta.id_usuario}</Typography>
+                <Typography>📅 Fecha: {formatearFecha(venta.fecha)}</Typography>
                 <Typography>💰 Total: ${venta.total}</Typography>
 
                 <Stack direction="row" spacing={1} mt={2}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => handleActualizarVenta(venta.id)}
-                  >
-                    Editar
-                  </Button>
+                  <Link to={`/ventas/editar/${venta.id}`} style={{ textDecoration: 'none' }}>
+                    <Button variant="outlined" color="primary">
+                      Editar
+                    </Button>
+                  </Link>
+
                   <Button
                     variant="outlined"
                     color="error"
