@@ -5,7 +5,7 @@ export const obtener_productos = async () => {
     return results;
 };
 
-// Obtener un usuario por ID
+// Obtener un producto por ID
 export const obtener_productos_id = async (id) => {
     const [rows] = await db.query('SELECT * FROM Productos WHERE id = ?', [id]);
     return rows.length > 0 ? rows[0] : null;
