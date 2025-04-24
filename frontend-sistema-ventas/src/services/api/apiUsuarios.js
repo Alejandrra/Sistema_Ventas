@@ -19,7 +19,7 @@ export const obtenerUsuarioPorId = async (id) => {
     const response = await axios.get(`${API_URL}/usuarios/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener usuario por ID:", error);
+    console.error("Error al obtener usuarios por ID:", error);
     return null;
   }
 };
