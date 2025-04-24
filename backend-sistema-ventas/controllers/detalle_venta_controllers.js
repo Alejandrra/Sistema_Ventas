@@ -1,5 +1,5 @@
 //const pool = require('./db'); // Importa la conexión a la BD
-import {obtener_detalles_venta,agregar_detalle_venta,actualizar_detalle_venta,eliminar_detalle_venta} from '../model/Detalle_Venta_Model.js'; 
+import {obtener_detalles_venta,obtener_detalle_venta_id, agregar_detalle_venta,actualizar_detalle_venta,eliminar_detalle_venta} from '../model/Detalle_Venta_Model.js'; 
 
 
 // Obtener todos los detalles de ventas
@@ -78,6 +78,18 @@ export const Obtener_Detalles_Venta = async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
+
+export const obtener_Detalle_Venta_Id = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const detalle = await obtener_detalle_venta_id(id);
+        if (!detalle) return res.status(404).json({ mensaje: 'Detalle Venta no encontrado' });
+        res.json(detalle);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 
 // Agregar un nuevo producto a una venta
 export const Agregar_Detalle_Venta = async (req, res) => {

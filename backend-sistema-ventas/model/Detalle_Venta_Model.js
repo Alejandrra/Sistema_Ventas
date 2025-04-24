@@ -5,6 +5,14 @@ export const obtener_detalles_venta = async () => {
     return rows;
 };
 
+// Obtener un detalle_venta por ID
+export const obtener_detalle_venta_id = async (id) => {
+    const [rows] = await db.query('SELECT * FROM Detalle_Ventas WHERE id = ?', [id]);
+    return rows.length > 0 ? rows[0] : null;
+};
+
+
+
 export const agregar_detalle_venta  = async (venta_id, producto_id, cantidad, precio, subtotal) => {
     const [result] = await db.query(
         "INSERT INTO Detalle_Ventas (venta_id, producto_id, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?)",
