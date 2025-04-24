@@ -9,6 +9,16 @@ export const obtener_ventas = async () => {
     return rows;
 };
 
+export const obtener_venta_por_id = async (id) => {
+    const [rows] = await db.query(`
+        SELECT v.id, c.nombre AS cliente, u.nombre AS usuario, v.fecha, v.total 
+        FROM Ventas v
+        JOIN Clientes c ON v.cliente_id = c.id
+        JOIN Usuarios u ON v.usuario_id = u.id
+        WHERE v.id = ?
+    `, [id]);
+    return rows[0]; // Retorna solo una venta
+};
 export const crear_venta = async (cliente_id, usuario_id, fecha, total) => {
     const [result] = await db.query(
         "INSERT INTO Ventas (cliente_id, usuario_id, fecha, total) VALUES (?, ?, ?, ?)",

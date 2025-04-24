@@ -1,5 +1,5 @@
 //const pool = require('./db'); // Importa la conexión a la BD
-import { obtener_ventas, crear_venta, actualizar_venta, eliminar_venta }  from '../model/Venta_Model.js'; 
+import { obtener_ventas, obtener_venta_por_id, crear_venta, actualizar_venta, eliminar_venta }  from '../model/Venta_Model.js'; 
 
 export const obtener_Ventas = async (req, res) => {
     try {
@@ -8,6 +8,17 @@ export const obtener_Ventas = async (req, res) => {
     } catch (error) {
         console.error("Error al obtener ventas:", error);
         res.status(500).json({ error: "Error al obtener ventas" });
+    }
+};
+
+export const obtener_Venta_Id = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const venta = await obtener_venta_por_id(id);
+        if (!venta) return res.status(404).json({ mensaje: 'Venta no encontrado' });
+        res.json(venta);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 };
 
