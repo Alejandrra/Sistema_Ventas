@@ -143,11 +143,9 @@ const Login = () => { // Define el componente Login
             // Contenedor para los enlaces 
               container justifyContent="center"> 
               <Grid item>
-                <Link 
-                // Enlace para recuperar la contraseña
-                  href="#" variant="body2" sx={{ color: '#58a6ff' }}>
-                  Forgot your password? 
-                </Link>
+              <Link to="/forgot-password" style={{ color: '#58a6ff', textDecoration: 'none' }}>
+                Forgot your password?
+              </Link>
               </Grid>
             </Grid>
 
