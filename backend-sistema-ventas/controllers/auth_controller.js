@@ -6,6 +6,9 @@ dotenv.config();
 
 import jwt from 'jsonwebtoken';
 
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
+
 // Función para iniciar sesión (login)
 export const login_usuario = async (req, res) => {
   const { correo, contraseña } = req.body;
@@ -68,3 +71,59 @@ export const registrar_usuario = async (req, res) => {
       res.status(500).json({ mensaje: 'Error en el servidor' });
     }
   };
+
+  // Crear el transporte de correo
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // el servicio de correo
+  auth: {
+    user: process.env.GMAIL_USER, // tu correo de Gmail
+    pass: process.env.GMAIL_PASS  // tu contraseña de Gmail o una App Password (recomendado usar App Password)
+  }
+});
+
+// Función para manejar la recuperación de contraseña
+export const forgotPassword = async (req, res) => {
+  const { correo } = req.body;
+
+  try {
+    // Verificar si el usuario existe
+    const [rows] = await db.query('SELECT * FROM Usuarios WHERE correo = ?', [correo]);
+
+    if (rows.length === 0) {
+      return res.status(400).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    const usuario = rows[0];
+
+    // Generar un token único para la recuperación de la contraseña
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    const resetTokenExpiracion = Date.now() + 3600000; // 1 hora de validez
+
+    // Guardar el token y su fecha de expiración en la base de datos
+    await db.query('UPDATE Usuarios SET resetToken = ?, resetTokenExpiracion = ? WHERE correo = ?', [resetToken, resetTokenExpiracion, correo]);
+
+    // Crear el enlace de recuperación
+    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+
+    // Configurar el correo
+    const mailOptions = {
+      from: process.env.GMAIL_USER, // tu correo de Gmail
+      to: correo,
+      subject: 'Recuperación de Contraseña',
+      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: ${resetLink}`
+    };
+
+    // Enviar el correo
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ mensaje: 'Error al enviar el correo', error });
+      }
+      res.status(200).json({ mensaje: 'Correo de recuperación enviado' });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error en el servidor' });
+  }
+};
+
+
