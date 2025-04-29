@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // <--- Importamos axios
 import { TextField, Button, Box, Typography, Paper, Grid } from '@mui/material';
 
 const ForgotPassword = () => {
   const [correo, setCorreo] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí luego enviarás el correo al backend
-    alert(`Se ha enviado un enlace de recuperación a: ${correo}`);
-    navigate('/login'); // Después de enviar, regresa al login
+    try {
+      const response = await axios.post('http://localhost:3000/api/recuperar-password', { correo });
+      alert(response.data.mensaje); // Mostrar mensaje del servidor
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+      alert('Error al intentar recuperar la contraseña');
+    }
   };
 
   return (
