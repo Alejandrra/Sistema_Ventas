@@ -127,4 +127,40 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
+// Función para manejar el restablecimiento de contraseña
+export const resetPassword = async (req, res) => {
+  const { resetToken } = req.params; // el token viene en la URL
+  const { nuevaContraseña } = req.body; // la nueva contraseña la manda el usuario en el formulario
+
+  try {
+    // Buscar usuario con ese token y que el token no haya expirado
+    const [rows] = await db.query(
+      'SELECT * FROM Usuarios WHERE resetToken = ? AND resetTokenExpiracion > ?',
+      [resetToken, Date.now()]
+    );
+
+    if (rows.length === 0) {
+      return res.status(400).json({ mensaje: 'Token inválido o expirado' });
+    }
+
+    const usuario = rows[0];
+
+    // Encriptar la nueva contraseña
+    const contraseñaHash = await bcrypt.hash(nuevaContraseña, 10);
+
+    // Actualizar la contraseña y limpiar el resetToken y resetTokenExpiracion
+    await db.query(
+      'UPDATE Usuarios SET contraseña = ?, resetToken = NULL, resetTokenExpiracion = NULL WHERE id = ?',
+      [contraseñaHash, usuario.id]
+    );
+
+    res.status(200).json({ mensaje: 'Contraseña restablecida correctamente' });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error en el servidor' });
+  }
+};
+
+
 
