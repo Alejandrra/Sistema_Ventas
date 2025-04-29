@@ -15,6 +15,7 @@ import ActualizarProducto from './pages/ActualizarProducto';
 import ActualizarVenta from './pages/ActualizarVenta';
 import ActualizarDetalleVenta from './pages/ActualizarDetalleVenta';
 import ForgotPassword from './pages/ForgotPassword'; 
+import ResetPassword from './pages/ResetPassword'; 
 
 
 
@@ -35,6 +36,7 @@ function App() {
         {/* Rutas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password/:resetToken" element={<ResetPassword />} />
         <Route path="/registro" element={<Registro />} />
 
         {/* Rutas protegidas */}
