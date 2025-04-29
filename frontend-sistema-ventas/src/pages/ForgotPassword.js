@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // <--- Importamos axios
+import axios from 'axios'; // Importar axios
 import { TextField, Button, Box, Typography, Paper, Grid } from '@mui/material';
 
 const ForgotPassword = () => {
