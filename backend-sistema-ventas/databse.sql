@@ -7,7 +7,9 @@ CREATE TABLE Usuarios (
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
     contraseña VARCHAR(255) NOT NULL,
-    rol ENUM('admin', 'vendedor') NOT NULL
+    rol ENUM('admin', 'vendedor') NOT NULL,
+    resetToken VARCHAR(255),
+    resetTokenExpiracion BIGINT
 );
 
 -- Tabla de Clientes
