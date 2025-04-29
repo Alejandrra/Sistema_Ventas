@@ -76,8 +76,8 @@ export const registrar_usuario = async (req, res) => {
 const transporter = nodemailer.createTransport({
   service: 'gmail', // el servicio de correo
   auth: {
-    user: 'nicole73711@gmail.com',//process.env.GMAIL_USER, // tu correo de Gmail
-    pass: 'RiqltuoGnm.17'//process.env.GMAIL_PASS  // tu contraseña de Gmail o una App Password (recomendado usar App Password)
+    user: process.env.GMAIL_USER, 
+    pass: process.env.GMAIL_PASS  
   }
 });
 
@@ -103,11 +103,12 @@ export const forgotPassword = async (req, res) => {
     await db.query('UPDATE Usuarios SET resetToken = ?, resetTokenExpiracion = ? WHERE correo = ?', [resetToken, resetTokenExpiracion, correo]);
 
     // Crear el enlace de recuperación
-    const resetLink = `http://localhost:3000/forgot-password/${resetToken}`;
+    const resetLink = `${process.env.FRONTEND_URL}/forgot-password/${resetToken}`;
+
 
     // Configurar el correo
     const mailOptions = {
-      from: 'nicole73711@gmail.com', //process.env.GMAIL_USER, // tu correo de Gmail
+      from: process.env.GMAIL_USER, 
       to: correo,
       subject: 'Recuperación de Contraseña',
       text: `Haz clic en el siguiente enlace para restablecer tu contraseña: ${resetLink}`
