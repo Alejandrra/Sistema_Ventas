@@ -7,10 +7,13 @@ const ForgotPassword = () => {
   const [correo, setCorreo] = useState('');
   const navigate = useNavigate();
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/forgot-password', { correo });
+      const response = await axios.post(`${API_URL}/api/forgot-password`, { correo });
+
       alert(response.data.mensaje); // Mostrar mensaje del servidor
       navigate('/login');
     } catch (error) {
