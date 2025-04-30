@@ -5,10 +5,14 @@ import express from "express";
 import pool from "./config/db.js";
 const router = express.Router();
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 import { login_usuario, registrar_usuario , forgotPassword, resetPassword } from './controllers/auth_controller.js';
 >>>>>>> 6f0aa6533681b4746324b4cd284063afe29170ea
+=======
+import { login_usuario, registrar_usuario , forgotPassword, resetPassword} from './controllers/auth_controller.js';
+>>>>>>> Stashed changes
 
 import usuariosRoutes from './routes/usuarios_routes.js';
 import clientesRoutes from './routes/clientes_routes.js';
