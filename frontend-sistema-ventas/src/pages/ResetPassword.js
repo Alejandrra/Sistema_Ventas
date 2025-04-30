@@ -8,10 +8,13 @@ const ResetPassword = () => {
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`http://localhost:3000/reset-password/${resetToken}`, {
+      const res = await axios.post(`${API_URL}/api/reset-password/${resetToken}`,
+       {
         nuevaContraseña,
       });
 
