@@ -5,7 +5,7 @@ import express from "express";
 import pool from "./config/db.js";
 const router = express.Router();
 
-import { login_usuario, registrar_usuario , forgotPassword } from './controllers/auth_controller.js';
+import { login_usuario, registrar_usuario , forgotPassword, resetPassword } from './controllers/auth_controller.js';
 
 import usuariosRoutes from './routes/usuarios_routes.js';
 import clientesRoutes from './routes/clientes_routes.js';
@@ -16,6 +16,7 @@ import detalleventasRoutes from './routes/detalle_ventas_routes.js';
 router.post('/login', login_usuario); //llamamos a la ruta login
 router.post('/register', registrar_usuario); //llamamos a la ruta registro
 router.post('/forgot-password', forgotPassword); //ruta de recuperacion de contrasena
+router.post('/reset-password/:resetToken', resetPassword); //ruta para actualizar contrasena
 
 router.use('/usuarios', usuariosRoutes); //llamamos a la ruta
 router.use('/clientes', clientesRoutes); //llamamos a la ruta
