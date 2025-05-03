@@ -23,20 +23,30 @@ const Bienvenida = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Bienvenido al Sistema de Ventas</h1>
-      <p>Selecciona una opción del menú para comenzar.</p>
-
+      
       {/* Ventana emergente de menú */}
-      <VentanaEmergente open={open} handleClose={handleClose} title="Menú Principal">
+      <VentanaEmergente open={open} handleClose={handleClose} title="Bienvenido al Sistema de Ventas">
+        
+        <Button fullWidth variant="contained" color="error" onClick={() => irAVista('/usuarios')}>
+          Usuarios
+        </Button>
+
         <Button fullWidth variant="contained" color="primary" onClick={() => irAVista('/clientes')}>
           Clientes
         </Button>
+
         <Button fullWidth variant="contained" color="secondary" onClick={() => irAVista('/productos')}>
           Productos
         </Button>
+
         <Button fullWidth variant="contained" color="success" onClick={() => irAVista('/ventas')}>
           Ventas
         </Button>
+
+        <Button fullWidth variant="contained" color="warning" onClick={() => irAVista('/detalle_venta')}>
+          Detalle Ventas
+        </Button>
+
       </VentanaEmergente>
     </div>
   );
