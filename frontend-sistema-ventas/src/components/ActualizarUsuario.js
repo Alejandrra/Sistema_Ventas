@@ -92,7 +92,7 @@ const EditarUsuarioModal = ({ open, onClose, usuarioId, onGuardado }) => {
   const [usuario, setUsuario] = useState({
     nombre: '',
     correo: '',
-    contraseña: '',
+    contraseña:'',
     rol: ''
   });
 
