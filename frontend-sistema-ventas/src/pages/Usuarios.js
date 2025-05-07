@@ -17,7 +17,7 @@ import {
   eliminarUsuario,
   obtenerUsuarioPorId
 } from '../services/api/apiUsuarios';
-import EditarUsuarioModal from '../components/ActualizarUsuario'; // asegúrate que este sea el nuevo componente modal
+import EditarUsuarioModal from '../components/ActualizarUsuario'; 
 
 const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
