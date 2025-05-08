@@ -10,7 +10,8 @@ import Navbar from './components/MNavegacion';
 import Registro from './pages/Registro';
 import Bienvenida from './pages/Bienvenido';
 import ActualizarCliente from './pages/ActualizarCliente';
-import ActualizarUsuario from './pages/ActualizarUsuario';
+import EditarUsuarioModal from './components/EditarUsuarioModal';
+
 import ActualizarProducto from './pages/ActualizarProducto';
 import ActualizarVenta from './pages/ActualizarVenta';
 import ActualizarDetalleVenta from './pages/ActualizarDetalleVenta';
@@ -44,7 +45,7 @@ function App() {
         <Route path="/clientes/editar/:id" element={isAuthenticated ? <ActualizarCliente/>: <Navigate to="/login" />} />
 
         <Route path="/usuarios" element={isAuthenticated ? <Usuarios /> : <Navigate to="/login" />} />
-        <Route path="/usuarios/editar/:id" element={isAuthenticated ? <ActualizarUsuario/>: <Navigate to="/login" />} />
+        <Route path="/usuarios/editar/:id" element={isAuthenticated ? <EditarUsuarioModal/>: <Navigate to="/login" />} />
         
         <Route path="/productos" element={isAuthenticated ? <Productos /> : <Navigate to="/login" />} />
         <Route path="/productos/editar/:id" element={isAuthenticated ? <ActualizarProducto/>: <Navigate to="/login" />} />
