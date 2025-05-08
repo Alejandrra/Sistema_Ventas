@@ -1,10 +1,17 @@
-
 import React, { useEffect, useState } from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Typography
+} from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography } from '@mui/material';
 import { obtenerClientePorId, actualizarCliente } from '../services/api/apiClientes';
 
-const EditarCliente = () => {
+const EditarClienteModal = ({ open, onClose }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [cliente, setCliente] = useState({
@@ -15,8 +22,10 @@ const EditarCliente = () => {
   });
 
   useEffect(() => {
-    obtenerClientePorId(id).then((data) => setCliente(data));
-  }, [id]);
+    if (open) {
+      obtenerClientePorId(id).then((data) => setCliente(data));
+    }
+  }, [id, open]);
 
   const handleChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
@@ -25,49 +34,55 @@ const EditarCliente = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await actualizarCliente(id, cliente);
-    navigate('/clientes'); // Vuelve al listado
+    onClose(); // Cierra el modal
+    navigate('/clientes'); // Redirige
   };
 
   return (
-    <Box sx={{ maxWidth: 500, mx: 'auto', mt: 5 }}>
-      <Typography variant="h5" gutterBottom>Editar Cliente</Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Nombre"
-          name="nombre"
-          value={cliente.nombre}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Correo"
-          name="correo"
-          value={cliente.correo}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Teléfono"
-          name="telefono"
-          value={cliente.telefono}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Direccion"
-          name="direccion"
-          value={cliente.direccion}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <Button type="submit" variant="contained" color="primary">Guardar Cambios</Button>
-      </form>
-    </Box>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>Editar Cliente</DialogTitle>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Nombre"
+            name="nombre"
+            value={cliente.nombre}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Correo"
+            name="correo"
+            value={cliente.correo}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Teléfono"
+            name="telefono"
+            value={cliente.telefono}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Dirección"
+            name="direccion"
+            value={cliente.direccion}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <DialogActions>
+            <Button onClick={onClose} color="secondary">Cancelar</Button>
+            <Button type="submit" variant="contained" color="primary">Guardar Cambios</Button>
+          </DialogActions>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default EditarCliente;
+export default EditarClienteModal;
