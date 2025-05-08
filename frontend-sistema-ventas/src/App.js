@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import Navbar from './components/MNavegacion';
 import Registro from './pages/Registro';
 import Bienvenida from './pages/Bienvenido';
-import ActualizarCliente from './pages/ActualizarCliente';
+import EditarClienteModal from './components/EditarClienteModal';
 import EditarUsuarioModal from './components/EditarUsuarioModal';
 
 import ActualizarProducto from './pages/ActualizarProducto';
@@ -42,7 +42,7 @@ function App() {
 
         {/* Rutas protegidas */}
         <Route path="/clientes" element={isAuthenticated ? <Clientes /> : <Navigate to="/login" />} />
-        <Route path="/clientes/editar/:id" element={isAuthenticated ? <ActualizarCliente/>: <Navigate to="/login" />} />
+        <Route path="/clientes/editar/:id" element={isAuthenticated ? <EditarClienteModal/>: <Navigate to="/login" />} />
 
         <Route path="/usuarios" element={isAuthenticated ? <Usuarios /> : <Navigate to="/login" />} />
         <Route path="/usuarios/editar/:id" element={isAuthenticated ? <EditarUsuarioModal/>: <Navigate to="/login" />} />
