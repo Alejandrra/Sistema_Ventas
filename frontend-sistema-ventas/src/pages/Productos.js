@@ -11,7 +11,7 @@ import {
   Stack
 } from '@mui/material';
 
-import { Link } from 'react-router-dom';
+import EditarProductoModal from '../components/EditarProductoModal';
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -22,15 +22,17 @@ const Productos = () => {
     stock: '',
     categoria: ''
   });
-// Cargar productos al cargar el componente
+
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+
   useEffect(() => {
-    cargarProductos(); //obtener la lista de productos desde el backend
+    cargarProductos();
   }, []);
 
-//Funcion para obtener los productos de la api
-  const cargarProductos = async () => { 
-    const data = await obtenerProductos(); //hace un GET al backend
-    setProductos(data); //Guarda los datos en productos con setProductos(data)
+  const cargarProductos = async () => {
+    const data = await obtenerProductos();
+    setProductos(data);
   };
 
   const handleCrearProducto = async () => {
@@ -43,41 +45,35 @@ const Productos = () => {
     const productoFormateado = {
       nombre,
       descripcion,
-      precio: parseFloat(precio), // Convertir a número
-      stock: parseInt(stock), // Convertir a número entero
+      precio: parseFloat(precio),
+      stock: parseInt(stock),
       categoria
     };
 
-    await crearProducto(productoFormateado); //hace un POST a la API.
+    await crearProducto(productoFormateado);
     setNuevoProducto({ nombre: '', descripcion: '', precio: '', stock: '', categoria: '' });
-    cargarProductos(); //limpia y actualiza la lista de productos
-
+    cargarProductos();
   };
-/*
-  const handleActualizarProducto = async (id) => {
-    const nuevoPrecio = prompt("Nuevo precio:");
-    const nuevoStock = prompt("Nuevo stock:");
-    const nuevoNombre = prompt("Nuevo nombre:");
-    const nuevoDescripcion = prompt("Nueva descripción:");
-    const nuevoCategoria = prompt("Nueva categoría:");
 
-    if (!nuevoPrecio || !nuevoStock || !nuevoNombre || !nuevoDescripcion || !nuevoCategoria) return;
-
-    await actualizarProducto(id, {
-      precio: nuevoPrecio,
-      stock: nuevoStock,
-      nombre: nuevoNombre,
-      descripcion: nuevoDescripcion,
-      categoria: nuevoCategoria
-    });
-
-    cargarProductos(); //vuelve a cargar los datos
-  };
-*/
   const handleEliminarProducto = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este producto?")) return;
-    await eliminarProducto(id); //hace un DELATE a la API.
-    cargarProductos(); //vuelve a cargar los datos
+    await eliminarProducto(id);
+    cargarProductos();
+  };
+
+  const handleAbrirModal = (producto) => {
+    setProductoSeleccionado(producto);
+    setModalAbierto(true);
+  };
+
+  const handleCerrarModal = () => {
+    setModalAbierto(false);
+    setProductoSeleccionado(null);
+  };
+
+  const handleProductoActualizado = () => {
+    cargarProductos();
+    handleCerrarModal();
   };
 
   return (
@@ -94,9 +90,7 @@ const Productos = () => {
                 <Typography variant="body2">💲{producto.precio} | Stock: {producto.stock}</Typography>
                 <Typography variant="body2">Categoría: {producto.categoria}</Typography>
                 <Stack direction="row" spacing={1} mt={2}>
-                <Link to={`/productos/editar/${producto.id}`} style={{ textDecoration: 'none' }}>
-                  <Button variant="outlined" size="small">Editar</Button>
-                </Link>
+                  <Button variant="outlined" size="small" onClick={() => handleAbrirModal(producto)}>Editar</Button>
                   <Button variant="contained" color="error" size="small" onClick={() => handleEliminarProducto(producto.id)}>Eliminar</Button>
                 </Stack>
               </CardContent>
@@ -145,6 +139,15 @@ const Productos = () => {
           </Button>
         </Stack>
       </Box>
+
+      {modalAbierto && productoSeleccionado && (
+        <EditarProductoModal
+          id={productoSeleccionado.id}
+          abierto={modalAbierto}
+          onCerrar={handleCerrarModal}
+          onGuardado={handleProductoActualizado}
+        />
+      )}
     </Box>
   );
 };

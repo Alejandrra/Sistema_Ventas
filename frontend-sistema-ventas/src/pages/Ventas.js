@@ -18,7 +18,7 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
-import { Link } from 'react-router-dom';
+import EditarVentaModal from "../components/EditarVentaModal";
 
 const Venta = () => {
   const [ventas, setVentas] = useState([]);
@@ -34,6 +34,8 @@ const Venta = () => {
     cantidad: "",
     precio: "",
   });
+  const [ventaSeleccionada, setVentaSeleccionada] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
 
   useEffect(() => {
     cargarVentas();
@@ -42,14 +44,13 @@ const Venta = () => {
   const cargarVentas = async () => {
     try {
       const data = await obtenerVentas();
-      console.log("Ventas cargadas:", data); // Verifica que los datos son correctos
+      console.log("Ventas cargadas:", data);
       setVentas(data);
     } catch (error) {
       console.error("Error al cargar ventas:", error);
     }
   };
 
-  // Función para formatear la fecha correctamente
   const formatearFecha = (fecha) => {
     return fecha ? fecha.replace("T", " ") + ":00" : null;
   };
@@ -70,20 +71,19 @@ const Venta = () => {
       usuario_id: nuevaVenta.usuario_id,
       fecha: nuevaVenta.fecha ? formatearFecha(nuevaVenta.fecha) : undefined,
       total: parseFloat(nuevaVenta.total),
-      productos: nuevaVenta.productos, // Agregar productos a la venta
+      productos: nuevaVenta.productos,
     };
 
     try {
       await crearVenta(ventaFormateada);
       alert("Venta creada correctamente");
-      setNuevaVenta({ cliente_id: "", usuario_id: "", fecha: "", total: "", productos: [] }); // Limpiar después de agregar
-      cargarVentas(); // Recargar ventas después de crear una nueva
+      setNuevaVenta({ cliente_id: "", usuario_id: "", fecha: "", total: "", productos: [] });
+      cargarVentas();
     } catch (error) {
       console.error("Error al crear venta:", error);
     }
   };
 
-  // Función para agregar un producto a la venta
   const handleAgregarProducto = () => {
     if (!producto.producto_id || !producto.cantidad || !producto.precio) {
       alert("Completa todos los campos del producto.");
@@ -101,7 +101,7 @@ const Venta = () => {
       productos: [...nuevaVenta.productos, nuevoProducto],
     });
 
-    setProducto({ producto_id: "", cantidad: "", precio: "" }); // Limpiar campos de producto
+    setProducto({ producto_id: "", cantidad: "", precio: "" });
   };
 
   const handleEliminarVenta = async (id) => {
@@ -109,10 +109,20 @@ const Venta = () => {
 
     try {
       await eliminarVenta(id);
-      cargarVentas(); // Recargar ventas después de eliminar una
+      cargarVentas();
     } catch (error) {
       console.error("Error al eliminar venta:", error);
     }
+  };
+
+  const abrirModal = (venta) => {
+    setVentaSeleccionada(venta);
+    setModalAbierto(true);
+  };
+
+  const cerrarModal = () => {
+    setModalAbierto(false);
+    setVentaSeleccionada(null);
   };
 
   return (
@@ -133,12 +143,9 @@ const Venta = () => {
                 <Typography>💰 Total: ${venta.total}</Typography>
 
                 <Stack direction="row" spacing={1} mt={2}>
-                  <Link to={`/ventas/editar/${venta.id}`} style={{ textDecoration: 'none' }}>
-                    <Button variant="outlined" color="primary">
-                      Editar
-                    </Button>
-                  </Link>
-
+                  <Button variant="outlined" color="primary" onClick={() => abrirModal(venta)}>
+                    Editar
+                  </Button>
                   <Button
                     variant="outlined"
                     color="error"
@@ -252,6 +259,15 @@ const Venta = () => {
       <Button variant="contained" color="primary" onClick={handleCrearVenta} sx={{ mt: 3 }}>
         Guardar Venta
       </Button>
+
+      {ventaSeleccionada && (
+        <EditarVentaModal
+          open={modalAbierto}
+          handleClose={cerrarModal}
+          venta={ventaSeleccionada}
+          recargarVentas={cargarVentas}
+        />
+      )}
     </Box>
   );
 };
