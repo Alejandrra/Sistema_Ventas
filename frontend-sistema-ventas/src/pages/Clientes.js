@@ -16,9 +16,7 @@ import {
   crearCliente,
   eliminarCliente
 } from '../services/api/apiClientes';
-import { Link } from 'react-router-dom';
-
-
+import EditarClienteModal from '../components/EditarClienteModal';
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -29,15 +27,16 @@ const Clientes = () => {
     direccion: '',
   });
 
-// Cargar clientes al cargar el componente
+  const [clienteEditandoId, setClienteEditandoId] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
+
   useEffect(() => {
-    cargarClientes(); //obtener la lista de clientes desde el backend.
+    cargarClientes();
   }, []);
 
-  //Funcion para obtener los usuarios de la api
   const cargarClientes = async () => {
-    const data = await obtenerClientes(); //hace un GET al backend.
-    setClientes(data); //Guarda los datos en clientes
+    const data = await obtenerClientes();
+    setClientes(data);
   };
 
   const handleCrearCliente = async () => {
@@ -51,39 +50,29 @@ const Clientes = () => {
     const clienteFormateado = {
       nombre,
       correo,
-      telefono: parseInt(telefono), // Convertir a número entero
+      telefono: parseInt(telefono),
       direccion,
     };
 
-    await crearCliente(clienteFormateado); //hace un POST a la API.
+    await crearCliente(clienteFormateado);
     setNuevoCliente({ nombre: '', correo: '', telefono: '', direccion: '' });
-    cargarClientes(); //limpia y actualiza la lista de clientes
+    cargarClientes();
   };
-
-/*
-  const handleActualizarCliente = async (id) => {
-    const nuevoNombre = prompt("Nuevo nombre:");
-    const nuevoCorreo = prompt("Nuevo correo:");
-    const nuevoTelefono = prompt("Nuevo telefono:");
-    const nuevoDireccion = prompt("Nueva dirección:");
-
-    if (!nuevoNombre || !nuevoCorreo || !nuevoTelefono || !nuevoDireccion) return;
-
-    await actualizarCliente(id, {
-      nombre: nuevoNombre,
-      correo: nuevoCorreo,
-      telefono: nuevoTelefono,
-      direccion: nuevoDireccion
-    });
-
-    cargarClientes(); //vuelve a cargar los datos
-  };
-*/
 
   const handleEliminarCliente = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este cliente?")) return;
-    await eliminarCliente(id); //hace un DELATE a la API.
-    cargarClientes(); //vuelve a cargar los datos
+    await eliminarCliente(id);
+    cargarClientes();
+  };
+
+  const abrirModalEdicion = (id) => {
+    setClienteEditandoId(id);
+    setModalAbierto(true);
+  };
+
+  const cerrarModal = () => {
+    setModalAbierto(false);
+    setClienteEditandoId(null);
   };
 
   return (
@@ -153,17 +142,23 @@ const Clientes = () => {
           <Typography variant="body2" gutterBottom>{cliente.direccion}</Typography>
           <Divider sx={{ my: 1 }} />
           <Box>
-            <Link to={`/clientes/editar/${cliente.id}`}>
-            <IconButton color="primary">
+            <IconButton color="primary" onClick={() => abrirModalEdicion(cliente.id)}>
               <Edit />
             </IconButton>
-            </Link>
             <IconButton color="error" onClick={() => handleEliminarCliente(cliente.id)}>
               <Delete />
             </IconButton>
           </Box>
         </Paper>
       ))}
+
+      {/* Modal de edición */}
+      <EditarClienteModal
+        open={modalAbierto}
+        onClose={cerrarModal}
+        clienteId={clienteEditandoId}
+        onGuardado={cargarClientes}
+      />
     </Container>
   );
 };

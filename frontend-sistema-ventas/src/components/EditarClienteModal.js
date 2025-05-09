@@ -6,81 +6,87 @@ import {
   DialogActions,
   TextField,
   Button,
-  Typography
+  CircularProgress,
+  Box
 } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
 import { obtenerClientePorId, actualizarCliente } from '../services/api/apiClientes';
 
-const EditarClienteModal = ({ open, onClose }) => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [cliente, setCliente] = useState({
-    nombre: '',
-    correo: '',
-    telefono: '',
-    direccion: ''
-  });
+const EditarClienteModal = ({ open, onClose, clienteId, onGuardado }) => {
+  const [cliente, setCliente] = useState(null);
+  const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
-    if (open) {
-      obtenerClientePorId(id).then((data) => setCliente(data));
-    }
-  }, [id, open]);
+    const cargarCliente = async () => {
+      if (clienteId && open) {
+        setCargando(true);
+        const data = await obtenerClientePorId(clienteId);
+        setCliente(data);
+        setCargando(false);
+      }
+    };
+    cargarCliente();
+  }, [clienteId, open]);
 
-  const handleChange = (e) => {
-    setCliente({ ...cliente, [e.target.name]: e.target.value });
+  const handleGuardar = async () => {
+    await actualizarCliente(clienteId, cliente);
+    onGuardado(); // Actualiza la lista
+    onClose(); // Cierra el modal
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await actualizarCliente(id, cliente);
-    onClose(); // Cierra el modal
-    navigate('/clientes'); // Redirige
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCliente((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>Editar Cliente</DialogTitle>
       <DialogContent>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            label="Nombre"
-            name="nombre"
-            value={cliente.nombre}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Correo"
-            name="correo"
-            value={cliente.correo}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Teléfono"
-            name="telefono"
-            value={cliente.telefono}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Dirección"
-            name="direccion"
-            value={cliente.direccion}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <DialogActions>
-            <Button onClick={onClose} color="secondary">Cancelar</Button>
-            <Button type="submit" variant="contained" color="primary">Guardar Cambios</Button>
-          </DialogActions>
-        </form>
+        {cargando || !cliente ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            <TextField
+              margin="dense"
+              label="Nombre"
+              name="nombre"
+              fullWidth
+              value={cliente.nombre}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="dense"
+              label="Correo"
+              name="correo"
+              fullWidth
+              value={cliente.correo}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="dense"
+              label="Teléfono"
+              name="telefono"
+              fullWidth
+              value={cliente.telefono}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="dense"
+              label="Dirección"
+              name="direccion"
+              fullWidth
+              value={cliente.direccion}
+              onChange={handleChange}
+            />
+          </>
+        )}
       </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancelar</Button>
+        <Button onClick={handleGuardar} disabled={!cliente}>Guardar</Button>
+      </DialogActions>
     </Dialog>
   );
 };
