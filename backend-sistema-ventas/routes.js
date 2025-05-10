@@ -1,7 +1,36 @@
-const express = require("express");
-const { pool } = require("./db"); // Importamos la conexión a la base de datos
+//const express = require("express");
+//const { pool } = require('./config/db'); // Importamos la conexión a la base de datos
+
+import express from "express";
+import pool from "./config/db.js";
 const router = express.Router();
 
+
+import { login_usuario, registrar_usuario , forgotPassword, resetPassword } from './controllers/auth_controller.js';
+
+import usuariosRoutes from './routes/usuarios_routes.js';
+import clientesRoutes from './routes/clientes_routes.js';
+import productosRoutes from './routes/productos_routes.js';
+import ventasRoutes from './routes/ventas_routes.js';
+import detalleventasRoutes from './routes/detalle_ventas_routes.js';
+
+router.post('/login', login_usuario); //llamamos a la ruta login
+router.post('/register', registrar_usuario); //llamamos a la ruta registro
+router.post('/forgot-password', forgotPassword); //ruta de recuperacion de contrasena
+router.post('/reset-password/:resetToken', resetPassword); //ruta para actualizar contraseña
+router.post('/reset-password/:resetToken', resetPassword); //ruta para actualizar contrasena
+
+router.use('/usuarios', usuariosRoutes); //llamamos a la ruta
+router.use('/clientes', clientesRoutes); //llamamos a la ruta
+router.use('/productos', productosRoutes); //llamamos a la ruta
+router.use('/ventas', ventasRoutes); //llamamos a la ruta
+router.use('/detalle_venta', detalleventasRoutes); //llamamos a la ruta
+
+
+
+export default router;
+
+/*
 // Obtener todos los usuarios (GET)
 router.get("/usuarios", async (req, res) => {
     try {
@@ -360,6 +389,6 @@ router.delete("/detalle-venta/:id", async (req, res) => {
     }
 });
 
+*/
 
 
-module.exports = router;
