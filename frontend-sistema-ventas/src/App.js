@@ -14,7 +14,7 @@ import EditarUsuarioModal from './components/EditarUsuarioModal';
 import EditarProductooModal from './components/EditarProductoModal';
 import EditarVentaModal from './components/EditarVentaModal';
 
-import ActualizarDetalleVenta from './pages/ActualizarDetalleVenta';
+import EditarDetalleVentaModal from './components/EditarDetalleVentaModal';
 import ForgotPassword from './pages/ForgotPassword'; 
 import ResetPassword from './pages/ResetPassword'; 
 
@@ -54,7 +54,7 @@ function App() {
         <Route path="/ventas/editar/:id" element={isAuthenticated ? <EditarVentaModal/>: <Navigate to="/login" />} />
 
         <Route path="/detalle_venta" element={isAuthenticated ? <Detalle_Ventas /> : <Navigate to="/login" />} />
-        <Route path="detalle_venta/editar/:id" element={isAuthenticated ? <ActualizarDetalleVenta/>: <Navigate to="/login" />} />
+        <Route path="detalle_venta/editar/:id" element={isAuthenticated ? <EditarDetalleVentaModal/>: <Navigate to="/login" />} />
       </Routes>
     </Router>
   );

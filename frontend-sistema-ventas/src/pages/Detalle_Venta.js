@@ -4,18 +4,8 @@ import {
   crearDetalle_Ventas,
   eliminarDetalle_Ventas,
 } from "../services/api/apiDetalle_Ventas";
-import { Link } from 'react-router-dom';
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { Box, TextField, Button, Typography, Paper, Grid, List, ListItem, ListItemText } from "@mui/material";
+import EditarDetalleVentaModal from "../components/EditarDetalleVentaModal";
 
 const Detalle_Venta = () => {
   const [detalle_ventas, setDetalle_Ventas] = useState([]);
@@ -26,6 +16,8 @@ const Detalle_Venta = () => {
     precio: "",
     subtotal: "",
   });
+  const [detalleSeleccionado, setDetalleSeleccionado] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
 
   useEffect(() => {
     cargarDetalle_Ventas();
@@ -38,7 +30,6 @@ const Detalle_Venta = () => {
 
   const handleCrearDetalle_Venta = async () => {
     const { venta_id, producto_id, cantidad, precio, subtotal } = nuevaDetalle_Venta;
-
     if (!venta_id || !producto_id || !cantidad || !precio || !subtotal) {
       alert("Completa todos los campos");
       return;
@@ -62,32 +53,21 @@ const Detalle_Venta = () => {
     });
     cargarDetalle_Ventas();
   };
-/*
-  const handleActualizarDetalle_Venta = async (id) => {
-    const nuevoVentaId = prompt("Nuevo Venta ID:");
-    const nuevoProductoId = prompt("Nuevo Producto ID:");
-    const nuevaCantidad = prompt("Nueva Cantidad:");
-    const nuevoPrecio = prompt("Nuevo Precio:");
-    const nuevoSubtotal = prompt("Nuevo Subtotal:");
-
-    if (!nuevoVentaId || !nuevoProductoId || !nuevaCantidad || !nuevoPrecio || !nuevoSubtotal) return;
-
-    await actualizarDetalle_Ventas(id, {
-      venta_id: nuevoVentaId,
-      producto_id: nuevoProductoId,
-      cantidad: nuevaCantidad,
-      precio: nuevoPrecio,
-      subtotal: nuevoSubtotal,
-    });
-
-    cargarDetalle_Ventas();
-  };
-*/
 
   const handleEliminarDetalle_Venta = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este detalle venta?")) return;
     await eliminarDetalle_Ventas(id);
     cargarDetalle_Ventas();
+  };
+
+  const abrirModalEditar = (detalle) => {
+    setDetalleSeleccionado(detalle);
+    setModalAbierto(true);
+  };
+
+  const cerrarModalEditar = () => {
+    setDetalleSeleccionado(null);
+    setModalAbierto(false);
   };
 
   return (
@@ -106,9 +86,7 @@ const Detalle_Venta = () => {
               fullWidth
               label="ID Venta"
               value={nuevaDetalle_Venta.venta_id}
-              onChange={(e) =>
-                setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, venta_id: e.target.value })
-              }
+              onChange={(e) => setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, venta_id: e.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -116,9 +94,7 @@ const Detalle_Venta = () => {
               fullWidth
               label="ID Producto"
               value={nuevaDetalle_Venta.producto_id}
-              onChange={(e) =>
-                setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, producto_id: e.target.value })
-              }
+              onChange={(e) => setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, producto_id: e.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -127,9 +103,7 @@ const Detalle_Venta = () => {
               type="number"
               label="Cantidad"
               value={nuevaDetalle_Venta.cantidad}
-              onChange={(e) =>
-                setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, cantidad: e.target.value })
-              }
+              onChange={(e) => setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, cantidad: e.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -138,9 +112,7 @@ const Detalle_Venta = () => {
               type="number"
               label="Precio"
               value={nuevaDetalle_Venta.precio}
-              onChange={(e) =>
-                setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, precio: e.target.value })
-              }
+              onChange={(e) => setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, precio: e.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -149,9 +121,7 @@ const Detalle_Venta = () => {
               type="number"
               label="Subtotal"
               value={nuevaDetalle_Venta.subtotal}
-              onChange={(e) =>
-                setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, subtotal: e.target.value })
-              }
+              onChange={(e) => setNuevaDetalle_Venta({ ...nuevaDetalle_Venta, subtotal: e.target.value })}
             />
           </Grid>
           <Grid item xs={12}>
@@ -183,12 +153,9 @@ const Detalle_Venta = () => {
               />
             </ListItem>
             <Box sx={{ display: "flex", gap: 1, paddingLeft: 2 }}>
-              <Link to={`/detalle_venta/editar/${detalle.id}`} style={{ textDecoration: 'none' }}>
-                <Button variant="outlined" color="primary">
-                  Editar
-                </Button>
-              </Link>
-              
+              <Button variant="outlined" color="primary" onClick={() => abrirModalEditar(detalle)}>
+                Editar
+              </Button>
               <Button variant="outlined" color="error" onClick={() => handleEliminarDetalle_Venta(detalle.id)}>
                 Eliminar
               </Button>
@@ -196,6 +163,13 @@ const Detalle_Venta = () => {
           </Paper>
         ))}
       </List>
+
+      <EditarDetalleVentaModal
+        open={modalAbierto}
+        onClose={cerrarModalEditar}
+        detalle={detalleSeleccionado}
+        onSave={cargarDetalle_Ventas}
+      />
     </Box>
   );
 };
